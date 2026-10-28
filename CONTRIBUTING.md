@@ -125,6 +125,17 @@ The release scripts have their own tests:
 node --test .github/scripts/prepare-release.test.mjs .github/scripts/release-version.test.mjs
 ```
 
+## Publishing the project site
+
+GitHub Pages publishes the static site from the `/docs` directory on `master`.
+The site links to this fork's source, releases, and contribution guide.
+Edit `docs/index.html` to change the page.
+Keep its canonical URL and `docs/sitemap.xml` consistent with the public site URL.
+Update the sitemap date when the page content changes.
+
+The page permits indexing and includes its text in the HTML.
+Google controls when the site appears in search results.
+
 ## Building a fork release
 
 The `master` branch contains the repository tabs feature and the fork release workflow.

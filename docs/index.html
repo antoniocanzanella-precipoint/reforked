@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rebased fork | Git logs by repository and branch</title>
+  <meta name="description" content="An independent Rebased Git client for Windows, macOS, and Linux. Open a Log tab for each repository that matches a branch. AI contributions are welcome.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://antoniocanzanella-precipoint.github.io/rebased/">
+  <link rel="icon" href="assets/rebased.svg" type="image/svg+xml">
+  <link rel="sitemap" href="sitemap.xml" type="application/xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Rebased fork | Git logs by repository and branch">
+  <meta property="og:description" content="Find repositories by branch and open their Git logs together. An independent Rebased fork that welcomes AI contributions.">
+  <meta property="og:url" content="https://antoniocanzanella-precipoint.github.io/rebased/">
+  <meta property="og:image" content="https://antoniocanzanella-precipoint.github.io/rebased/assets/screenshot.png">
+  <meta property="og:image:alt" content="The Rebased Git client with a commit graph and a file diff.">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareSourceCode",
+      "name": "Rebased fork",
+      "description": "An independent Rebased Git client with repository Log tabs by branch and support for AI contributions.",
+      "url": "https://antoniocanzanella-precipoint.github.io/rebased/",
+      "codeRepository": "https://github.com/antoniocanzanella-precipoint/rebased/tree/master",
+      "programmingLanguage": ["Kotlin", "Java"],
+      "runtimePlatform": "IntelliJ Platform",
+      "isBasedOn": "https://github.com/DetachHead/rebased"
+    }
+  </script>
+  <style>
+    :root { color-scheme: light; --ink: #20252a; --muted: #59636d; --accent: #b9400b; --line: #e1e4e6; --paper: #faf9f6; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.65; }
+    a { color: var(--accent); text-underline-offset: 4px; }
+    a:hover { text-decoration-thickness: 2px; }
+    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+    .wrap { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
+    .skip { position: absolute; left: 24px; top: -80px; background: white; padding: 12px; z-index: 1; }
+    .skip:focus { top: 12px; }
+    header { border-bottom: 1px solid var(--line); }
+    .header-row { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 0; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--ink); font-weight: 700; text-decoration: none; font-size: 1.15rem; }
+    nav { display: flex; flex-wrap: wrap; gap: 24px; font-size: .95rem; }
+    nav a { color: var(--ink); text-decoration: none; }
+    .hero { padding: 76px 0 52px; }
+    .eyebrow { color: var(--accent); font-size: .8rem; font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
+    h1 { margin: 14px 0 22px; max-width: 920px; font-size: clamp(2.5rem, 5.8vw, 4.5rem); line-height: 1.08; letter-spacing: -.045em; font-weight: 700; }
+    .lead { max-width: 720px; color: var(--muted); font-size: 1.18rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button { display: inline-block; border: 1px solid var(--ink); border-radius: 7px; padding: 12px 20px; font-weight: 650; text-decoration: none; color: var(--ink); }
+    .button.primary { color: white; background: var(--ink); }
+    .button:hover { background: #e9e6e0; }
+    .button.primary:hover { background: #38414a; }
+    figure { margin: 0 0 68px; }
+    .screenshot { display: block; width: 100%; height: auto; border: 1px solid #c5c9ce; border-radius: 10px; background: #272a2e; }
+    figcaption { margin-top: 12px; color: var(--muted); font-size: .88rem; }
+    section { margin-bottom: 64px; }
+    h2 { font-size: clamp(1.7rem, 3vw, 2.2rem); line-height: 1.2; letter-spacing: -.025em; margin: 0 0 22px; }
+    h3 { margin: 0 0 12px; font-size: 1.1rem; }
+    p { margin: 0 0 16px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { border-top: 3px solid var(--accent); padding: 22px 0; }
+    .card p { color: var(--muted); }
+    .steps { padding-left: 24px; max-width: 800px; }
+    .steps li { margin-bottom: 12px; padding-left: 8px; }
+    .panel { padding: 30px; border: 1px solid var(--line); border-radius: 10px; background: white; }
+    .panel > p { max-width: 760px; }
+    .platforms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 28px 0 12px; }
+    .platforms p { color: var(--muted); font-size: .92rem; }
+    .note { color: var(--muted); font-size: .9rem; }
+    footer { border-top: 1px solid var(--line); padding: 30px 0 40px; color: var(--muted); font-size: .88rem; }
+    footer p { margin-bottom: 10px; }
+    @media (max-width: 700px) {
+      .wrap { width: calc(100% - 32px); }
+      .header-row { align-items: flex-start; flex-direction: column; gap: 16px; padding: 20px 0; }
+      nav { gap: 22px; }
+      .hero { padding-top: 46px; }
+      .grid, .platforms { grid-template-columns: 1fr; gap: 0; }
+      .panel { padding: 22px; }
+      .platforms > div { margin-bottom: 18px; }
+      figure, section { margin-bottom: 44px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <div class="wrap header-row">
+      <a class="brand" href="./"><img src="assets/rebased.svg" alt="" width="32" height="32"> Rebased fork</a>
+      <nav aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#downloads">Downloads</a>
+        <a href="https://github.com/antoniocanzanella-precipoint/rebased/tree/master">Source on master</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap" id="main">
+    <div class="hero">
+      <p class="eyebrow">An independent Rebased fork</p>
+      <h1>Git logs for every matching repository.</h1>
+      <p class="lead">Find repositories by branch and open their Git logs together. Keep the IntelliJ Git tools in a separate desktop application.</p>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/antoniocanzanella-precipoint/rebased/releases">Download builds</a>
+        <a class="button" href="https://github.com/antoniocanzanella-precipoint/rebased/tree/master">View master on GitHub</a>
+      </div>
+    </div>
+    <figure>
+      <img class="screenshot" src="assets/screenshot.png" alt="The Rebased Git client with a commit graph and a file diff." width="1583" height="919" fetchpriority="high">
+      <figcaption>Rebased provides a desktop interface for Git on Windows, macOS, and Linux.</figcaption>
+    </figure>
+    <section id="features" aria-labelledby="features-title">
+      <h2 id="features-title">Repositories by Branch</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Find matching repositories</h3>
+          <p>Match a complete branch name across the root repository, initialized submodules, and other registered Git repositories.</p>
+        </div>
+        <div class="card">
+          <h3>Give each repository a Log</h3>
+          <p>Open one tab per matching repository. Each tab shows its full history and supports the normal Log filters.</p>
+        </div>
+        <div class="card">
+          <h3>Keep your tab settings</h3>
+          <p>Remember the selected branch, tab titles, selected tab, and dismissed tabs after a restart.</p>
+        </div>
+      </div>
+      <h3>Use the feature</h3>
+      <ol class="steps">
+        <li>Open a root repository that has at least one submodule.</li>
+        <li>Select <strong>Repositories by Branch</strong> in the Log toolbar.</li>
+        <li>Enter a branch name and select <strong>Apply</strong>.</li>
+        <li>Select <strong>Clear</strong> to return to one unfiltered Log.</li>
+      </ol>
+      <p>The feature leaves the checked out branches unchanged.</p>
+    </section>
+    <section class="panel" id="downloads" aria-labelledby="downloads-title">
+      <h2 id="downloads-title">Get the fork</h2>
+      <p>Download the published prerelease <strong>1.1.22-precipoint.1</strong>. Packages support x86_64 and aarch64.</p>
+      <div class="platforms">
+        <div><h3>Windows</h3><p>Installers and portable ZIP files.</p><a href="https://github.com/antoniocanzanella-precipoint/rebased/releases/tag/1.1.22-precipoint.1">Windows downloads</a></div>
+        <div><h3>macOS</h3><p>Disk images for Apple Silicon and Intel.</p><a href="https://github.com/antoniocanzanella-precipoint/rebased/releases/tag/1.1.22-precipoint.1">macOS downloads</a></div>
+        <div><h3>Linux</h3><p>AppImages and archives.</p><a href="https://github.com/antoniocanzanella-precipoint/rebased/releases/tag/1.1.22-precipoint.1">Linux downloads</a></div>
+      </div>
+      <p class="note">Windows installers are unsigned. Read the release notes for the features in each build.</p>
+      <p><a href="https://github.com/antoniocanzanella-precipoint/rebased/releases">Browse all releases</a> or <a href="https://github.com/antoniocanzanella-precipoint/rebased/blob/master/CONTRIBUTING.md#building-rebased">build from master</a>.</p>
+    </section>
+    <section aria-labelledby="contribute-title">
+      <h2 id="contribute-title">People and AI agents can contribute.</h2>
+      <p>This fork accepts AI assistance and AI-generated code. Contributors must review their changes and run the affected tests.</p>
+      <p>Keep each feature in separate commits. The contribution guide explains how to import changes from upstream or another repository.</p>
+      <div class="actions">
+        <a class="button" href="https://github.com/antoniocanzanella-precipoint/rebased/blob/master/CONTRIBUTING.md">Read the contribution guide</a>
+        <a class="button" href="https://github.com/antoniocanzanella-precipoint/rebased/issues">Report a problem</a>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <p>Maintained independently by <a href="https://github.com/antoniocanzanella-precipoint">antoniocanzanella-precipoint</a>.</p>
+      <p>Based on <a href="https://github.com/DetachHead/rebased">Rebased by DetachHead</a> and the <a href="https://github.com/JetBrains/intellij-community">IntelliJ platform by JetBrains</a>.</p>
+      <p><a href="https://github.com/antoniocanzanella-precipoint/rebased/blob/master/LICENSE.txt">License terms</a> · <a href="https://github.com/antoniocanzanella-precipoint/rebased/blob/master/NOTICE.txt">Notices</a> · <a href="sitemap.xml">Sitemap</a></p>
+    </div>
+  </footer>
+</body>
+</html>

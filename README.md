@@ -7,6 +7,8 @@
 This repository maintains an independent fork of [Rebased](https://github.com/DetachHead/rebased).
 The fork includes **Repositories by Branch** and accepts contributions from people and AI agents.
 
+Visit [the project site](https://antoniocanzanella-precipoint.github.io/rebased/) for features, downloads, and links to the source on `master`.
+
 Use [this repository](https://github.com/antoniocanzanella-precipoint/rebased) for the fork's code and contributions.
 Report problems in [the fork's issue tracker](https://github.com/antoniocanzanella-precipoint/rebased/issues).
 See [the contribution guide](CONTRIBUTING.md) for the AI policy, builds, and imports from other repositories.
