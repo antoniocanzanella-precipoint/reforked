@@ -3,6 +3,7 @@ package org.intellij.plugins.markdown.ui.preview;
 
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.ex.ActionUtil;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.event.VisibleAreaEvent;
@@ -13,6 +14,7 @@ import com.intellij.openapi.fileEditor.TextEditor;
 import com.intellij.openapi.fileEditor.TextEditorWithPreview;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBSplitter;
+import com.intellij.util.ArrayUtil;
 import org.intellij.plugins.markdown.MarkdownBundle;
 import org.intellij.plugins.markdown.settings.MarkdownSettings;
 import org.jetbrains.annotations.NotNull;
@@ -74,6 +76,11 @@ public final class MarkdownEditorWithPreview extends TextEditorWithPreview imple
   @Override
   protected @NotNull ActionGroup createRightToolbarActionGroup() {
     return (ActionGroup)ActionManager.getInstance().getAction("Markdown.Toolbar.Right");
+  }
+
+  @Override
+  protected AnAction @NotNull [] createTabActions() {
+    return ArrayUtil.prepend(createRightToolbarActionGroup(), super.createTabActions());
   }
 
   @Override
