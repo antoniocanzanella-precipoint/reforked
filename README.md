@@ -5,7 +5,8 @@
 </div>
 
 Reforked is an independent fork of [Rebased](https://github.com/DetachHead/rebased).
-Reforked includes **Repositories by Branch** and accepts contributions from people and AI agents.
+Reforked adds **Repositories by Branch**, Markdown previews, Mermaid diagrams, and PDF export.
+It accepts contributions from people and AI agents.
 
 Visit [the project site](https://antoniocanzanella-precipoint.github.io/reforked/) for features, downloads, and links to the source on `master`.
 
@@ -89,14 +90,34 @@ Use the layout buttons to show the editor, the preview, or both.
 Write a diagram in a fenced code block with the `mermaid` language.
 The preview updates when you change the file.
 
-Select **Export to PDF** in the Markdown toolbar or **Tools > Markdown**.
-Choose the file name and directory, then select **Export**.
+For example, add this block to a Markdown file:
+
+````markdown
+```mermaid
+flowchart LR
+    A[Edit Markdown] --> B[Live preview]
+    B --> C[Export PDF]
+```
+````
+
+In the New UI, find **Export to PDF** beside the editor layout controls.
+The button works in the editor, preview, and split views.
+You can also select **Tools > Markdown > Export to PDF**.
+
+1. Select **Export to PDF**.
+2. Enter a file name without `.pdf`. Reforked adds the extension.
+3. Choose the output directory.
+4. Select **Export**.
+
 The PDF uses the current document, including changes that you have not saved.
 Export waits for Mermaid diagrams, images, and fonts to load.
+The PDF keeps the preview colors and excludes the diagram zoom controls.
 If a Mermaid diagram fails to render, export reports an error.
 PDF export uses the bundled browser engine and does not require Pandoc.
 
 The legacy prerelease does not include these additions.
+
+![Reforked with Markdown source and Mermaid diagrams in the split view](docs/assets/markdown-preview.png)
 
 ### Repository log tabs by branch
 

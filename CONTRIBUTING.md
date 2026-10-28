@@ -119,6 +119,38 @@ For example, run a repository tab test:
 See [the testing guide](.agents/skills/testing/SKILL.md) for patterns and debug options.
 Changes to documentation alone do not require application tests.
 
+### Check Markdown preview and PDF export
+
+Close the development instance before you run Bazel again on Windows.
+The running instance can lock files that Bazel must replace.
+
+The export tests need the JCEF native files.
+The build stores downloaded bundles under `build/download/`.
+Use the bundle for your operating system and processor.
+Select the directory that contains the native files and `jcef.version`.
+
+Start a new PowerShell session.
+Replace `C:/path/to/jcef` below with the bundle directory, then run:
+
+```powershell
+$env:JAVA_TOOL_OPTIONS = '-Dintellij.test.standalone=true -Djava.awt.headless=false'
+$env:JAVA_TOOL_OPTIONS += ' -Djcef.test.native.bundle.path="C:/path/to/jcef"'
+./tests.cmd --module intellij.markdown.tests --test org.intellij.plugins.markdown.ui.preview.MarkdownPreviewLayoutSettingTest
+./tests.cmd --module intellij.markdown.tests --test com.intellij.markdown.jcef.fileActions.export.MarkdownExportReadinessTest
+```
+
+Close the test shell after the tests to discard the temporary Java options.
+
+Use the desktop app for these manual checks:
+
+- Edit the Markdown text. Confirm that the preview updates.
+- Check a Mermaid flowchart and a sequence diagram.
+- Switch between the editor, preview, and split views.
+- Export from the preview. Check the PDF text, diagrams, table, and image.
+- Use invalid Mermaid syntax. Confirm that export reports an error and creates no PDF.
+
+### Check the release scripts
+
 The release scripts have their own tests:
 
 ```shell
