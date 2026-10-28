@@ -131,3 +131,17 @@ body:not(.mermaid-standalone) .mermaid-zoom-anchor {
     -webkit-mask-size: contain;
 }
 
+@media print {
+    .mermaid-zoom-anchor {
+        display: none;
+    }
+
+    .mermaid {
+        overflow: visible;
+    }
+
+    .mermaid-wrapper {
+        break-inside: avoid;
+    }
+}
+

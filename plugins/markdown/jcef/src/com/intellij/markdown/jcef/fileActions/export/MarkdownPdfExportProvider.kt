@@ -48,7 +48,8 @@ internal class MarkdownPdfExportProvider : MarkdownExportProvider {
   }
 
   private fun MarkdownJCEFHtmlPanel.savePdf(path: String, project: Project, onFinished: () -> Unit, callback: BiConsumer<String, Boolean>) {
-    cefBrowser.printToPDF(path, CefPdfPrintSettings()) { _, ok ->
+    val settings = CefPdfPrintSettings().apply { print_background = true }
+    cefBrowser.printToPDF(path, settings) { _, ok ->
       try {
         val dirToExport = VfsUtil.findFileByIoFile(File(path), true)?.parent
         if (dirToExport != null) {

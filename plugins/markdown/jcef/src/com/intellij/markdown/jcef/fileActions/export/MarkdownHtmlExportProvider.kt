@@ -193,6 +193,7 @@ internal fun withMarkdownPreview(
       val content = readAction { HtmlSourceTextPreprocessor().preprocessText(project, document, mdFile) }
       val imageResourceProvider = panel.createImageResourceProvider()
       panel.setHtmlAndWait(content, mdFile, imageResourceProvider)
+      panel.waitForExport()
       action(panel) { Disposer.dispose(panel)}
     }
     catch (e: Exception) {

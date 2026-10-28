@@ -68,6 +68,11 @@ open class RebasedProperties(private val communityHomeDir: Path) : JetBrainsProd
 
     productLayout.bundledPluginModules = REBASED_BUNDLED_PLUGINS + sequenceOf(
       "intellij.idea.customization.plugin",
+      "intellij.jcef.plugin",
+      "intellij.json",
+      "intellij.markdown",
+      "intellij.mermaid",
+      "intellij.yaml",
       // from upstream:
       //"intellij.javaFX.community"
     )

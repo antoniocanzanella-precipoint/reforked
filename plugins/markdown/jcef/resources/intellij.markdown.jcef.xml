@@ -57,4 +57,13 @@
     <applicationService serviceImplementation="com.intellij.markdown.jcef.fileActions.export.MarkdownHtmlExportSettings"/>
     <applicationSettings service="com.intellij.markdown.jcef.fileActions.export.MarkdownHtmlExportSettings"/>
   </extensions>
+
+  <actions resource-bundle="messages.MarkdownBundle">
+    <action id="Markdown.ExportPdf"
+            class="com.intellij.markdown.jcef.fileActions.export.MarkdownPdfExportAction"
+            icon="AllIcons.ToolbarDecorator.Export">
+      <add-to-group group-id="Markdown.Toolbar.Right" anchor="first"/>
+      <add-to-group group-id="Markdown.Tools" anchor="after" relative-to-action="Markdown.Export"/>
+    </action>
+  </actions>
 </idea-plugin>

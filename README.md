@@ -80,6 +80,24 @@ Use this fork's downloads or source builds for the additional features.
 
 The fork retains the Git tools from [IntelliJ IDEA Community Edition](https://github.com/JetBrains/intellij-community) and upstream Rebased.
 
+### Markdown preview and PDF export
+
+Builds from `master` include Markdown editing, a live preview, and Mermaid diagrams.
+Open a `.md` file to see the editor and preview side by side.
+Use the layout buttons to show the editor, the preview, or both.
+
+Write a diagram in a fenced code block with the `mermaid` language.
+The preview updates when you change the file.
+
+Select **Export to PDF** in the Markdown toolbar or **Tools > Markdown**.
+Choose the file name and directory, then select **Export**.
+The PDF uses the current document, including changes that you have not saved.
+Export waits for Mermaid diagrams, images, and fonts to load.
+If a Mermaid diagram fails to render, export reports an error.
+PDF export uses the bundled browser engine and does not require Pandoc.
+
+The legacy prerelease does not include these additions.
+
 ### Repository log tabs by branch
 
 In the Log toolbar, select **Repositories by Branch** and enter a branch name.
