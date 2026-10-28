@@ -1,248 +1,199 @@
 # Contributing
 
-## AI Code Policy
+This guide applies to [this fork](https://github.com/antoniocanzanella-precipoint/rebased).
+[Upstream Rebased](https://github.com/DetachHead/rebased) has its own contribution policy.
 
-This project does not accept any AI generated code.
+## AI contribution policy
 
-Please also refrain from unnecessarily padding out your issues, comments or PR descriptions using LLMs. Though you may use AI to assist with translations if you aren't fluent in English.
+This fork accepts code written by people and AI agents.
+AI assistance and AI-generated code are welcome.
 
-If you are interested in the motivation behind this decision, [see here](https://detachhead.codeberg.page/workproperly/blog/2026/07/21/i-dont-like-ai/).
+Contributors remain responsible for each submitted change:
 
-## Getting the Source Code
+- Review the complete diff.
+- Run the affected tests and report the results.
+- State when AI writes or changes code.
+- Keep descriptions short and describe the behavior.
+- Keep the existing credits, copyright notices, and license terms.
+- Include related commits when an imported feature needs them.
 
-This section will guide you through getting the project sources and help avoid common issues in Git config and other steps before opening it in the IDE.
+## Submit a change
 
-### Prerequisites
+Report problems and propose features in [this fork's issue tracker](https://github.com/antoniocanzanella-precipoint/rebased/issues).
+You can submit a pull request without an assigned issue.
+Discuss large changes before implementation to confirm the scope.
 
-- Install [Git](https://git-scm.com/).
-- On **Windows**, set these Git options to avoid common issues during cloning:
-  ```shell
-  git config --global core.longpaths true
-  git config --global core.autocrlf input
-  ```
+1. Start a feature branch from this fork's `master`.
+2. Use the `codex/` prefix for an agent branch.
+3. Keep each feature in separate commits.
+4. Follow the applicable `AGENTS.md` instructions.
+5. Run the affected tests and review the diff.
+6. Open a pull request against this fork's `master`.
 
-### Clone Main Repository
+Include a short description, the test results, and any known limitations.
 
-Rebased is available from the [GitHub repository](https://github.com/detachhead/rebased).
-The **master** (_default_) branch contains the source code which is periodically merged with upstream, however Rebased tracks upstream IntelliJ Community releases in separate release branches. Releases are always published from the latest release branch instead of the master branch.
-[See below](#keeping-up-to-date-with-upstream) for more info.
+## Getting the source code
 
-You can [clone this project](https://www.jetbrains.com/help/idea/manage-projects-hosted-on-github.html#clone-from-GitHub) directly using IntelliJ IDEA.
-(see [Opening the IntelliJ IDEA Source Code in the IDE](#opening-the-intellij-idea-source-code-in-the-ide)).
+Install [Git](https://git-scm.com/).
+On Windows, configure Git before cloning:
 
-Alternatively, run the following commands in the terminal:
-   ```shell
-   git clone https://github.com/detachhead/rebased.git
-   cd rebased
-   ```
+```shell
+git config --global core.longpaths true
+git config --global core.autocrlf input
+```
 
-> [!TIP]
-> - **For faster download**: If the complete repository history isn't needed,
-> create [shallow clone](https://git-scm.com/docs/git-clone#Documentation/git-clone.txt---depthdepth).
-> To download only the latest revision of the repository,  add `--depth 1` option after `clone`.
-> - Cloning in IntelliJ IDEA also supports creating shallow clone.
+Clone this fork and register upstream Rebased:
 
----
+```shell
+git clone https://github.com/antoniocanzanella-precipoint/rebased.git
+cd rebased
+git remote add upstream https://github.com/DetachHead/rebased.git
+git config remote.pushDefault origin
+```
+
+Use these remote names:
+
+| Remote | Repository | Purpose |
+| --- | --- | --- |
+| `origin` | `antoniocanzanella-precipoint/rebased` | Develop and publish this fork. |
+| `upstream` | `DetachHead/rebased` | Review and import upstream changes. |
+
+The `master` branch contains this fork's development version.
+The release tags identify the source used for published packages.
+
 ## Building Rebased
 
-These instructions will help you build Rebased from source code, which is the basis for IntelliJ Platform development.
+### Open the project in IntelliJ IDEA
 
-> [!IMPORTANT]
->
-> IntelliJ IDEA project is currently being migrated to the [Bazel](https://bazel.build/) build system.
-> The migration is still in progress, so you may encounter some rough edges or temporary issues along the way, mostly related to IDE integration.
-> * Building the project using only IDE built-in capabilities is not supported anymore,
-    > so make sure the [Bazel plugin](https://plugins.jetbrains.com/plugin/22977-bazel) is installed and enabled.
-> * Known issue: some tests are not yet possible to be run with Bazel. In case of any issues,
-    > please depend on the `tests.cmd` script mentioned in the [Running IntelliJ IDEA in a CI/CD environment](#running-intellij-idea-in-a-cicd-environment) section.
+1. Install IntelliJ IDEA 2026.1 or newer.
+2. Enable the [Bazel plugin](https://plugins.jetbrains.com/plugin/22977-bazel).
+3. Open the `.bazelproject` file at the repository root.
+4. Enable any required plugins when IntelliJ IDEA requests them.
 
-### Opening the Rebased Source Code in the IDE
+If you disable the Maven plugin, define the `MAVEN_REPOSITORY` path variable.
+Set it to the `.m2/repository` directory in your user directory.
 
-**Prerequisites**:
-- Install [IntelliJ IDEA 2026.1](https://www.jetbrains.com/idea/download) or newer.
-- Install the [Bazel plugin](https://plugins.jetbrains.com/plugin/22977-bazel) (via _Settings | Plugins | Marketplace_).
-- If the **Maven** plugin is disabled, [add the path variable](https://www.jetbrains.com/help/idea/absolute-path-variables.html)
-  `MAVEN_REPOSITORY` pointing to `<USER_HOME>/.m2/repository` directory.
+The build uses Bazel.
+In IntelliJ IDEA, select **Build > Build Project**.
+From the repository root, run:
 
-Using the latest IntelliJ IDEA, click _File | Open_ and select the `<IDEA_HOME>/.bazelproject`.
-If IntelliJ IDEA displays a message about a missing or out-of-date required plugin (e.g., Kotlin),
-[enable, upgrade, or install that plugin](https://www.jetbrains.com/help/idea/managing-plugins.html) and restart IntelliJ IDEA.
-
-### Building the Rebased Application
-
-**In IntelliJ IDEA**, choose _Build | Build Project_ from the main menu.
-
-**From the command line**, run the [bazel-build-all-community.cmd](bazel-build-all-community.cmd) script
-in the `<IDEA_HOME>` directory (**note**: all `*.cmd` scripts work on both Windows and Unix systems).
-
-**To build installation packages**, run the [installers.cmd](installers.cmd) script in the `<IDEA_HOME>` directory.
-Options to build installers are passed as system properties to `installers.cmd` command.
-You may find the list of available properties in [BuildOptions.kt](platform/build-scripts/src/org/jetbrains/intellij/build/BuildOptions.kt)
-
-Pass `--debug` to suspend and wait for the debugger to attach to port 5005.
-
-Installer build examples:
 ```shell
-# Build installers only for current operating system:
-./installers.cmd -Dintellij.build.target.os=current
+./bazel-build-all-community.cmd
 ```
 
-> [!TIP]
-> 
-> The `installers.cmd` is used to run [OpenSourceCommunityInstallersBuildTarget](build/src/OpenSourceCommunityInstallersBuildTarget.kt) from the command line.
-> You can also call it directly from IDEA, using run configuration `Build Rebased Installers (current OS)`.
+### Run the application
 
-
-### Dockerized Build Environment
-
-To build installation packages inside a Docker container with preinstalled dependencies and tools,
-run the following command in `<IDEA_HOME>` directory (on Windows, use PowerShell):
-```shell
-docker build . --target intellij_idea --tag intellij_idea_env
-docker run --rm --user "$(id -u)" --volume "${PWD}:/community" intellij_idea_env
-```
-> [!NOTE]
-> 
-> Please remember to specify the `--user "$(id -u)"` argument for the container's user to match the host's user.
-> This prevents issues with permissions for the checked-out repository, the build output, if any.
-
----
-## Running Rebased from IDEA
-
-To run the Rebased that was built from source, choose _Run | Run..._ from the main menu
-and choose the preconfigured run configuration `Run //build:idea_community`.
-
-To run tests on the build, apply these settings to the _Run | Edit Configurations... | Templates | JUnit_ configuration tab:
-* Working dir: `<IDEA_HOME>/bin`
-* VM options:  `-ea`
-
-## Running Rebased from the command line
+In IntelliJ IDEA, select the `Run //build:idea_community` configuration.
+From the repository root, run:
 
 ```shell
 ./bazel.cmd run //build:idea_community
 ```
 
-### Running Rebased in a CI/CD environment
+### Build installation packages
 
-To run tests outside IntelliJ IDEA, use the `tests.cmd` command in `<IDEA_HOME>` directory.
-Options to run tests are passed as system properties to `tests.cmd` command.
-You may find the list of available properties in [TestingOptions.kt](platform/build-scripts/src/org/jetbrains/intellij/build/TestingOptions.kt)
+Build packages for the current operating system:
 
 ```shell
-# Run specific run configuration:
-./tests.cmd -Dintellij.build.test.configurations=ApiCheckTest
+./installers.cmd -Dintellij.build.target.os=current
 ```
+
+On PowerShell, use stop-parsing mode for JVM options:
+
+```powershell
+./installers.cmd --% -Dintellij.build.target.os=current
+```
+
+See [BuildOptions.kt](platform/build-scripts/src/org/jetbrains/intellij/build/BuildOptions.kt) for other build options.
+
+## Running tests
+
+Name the test module and the fully qualified test class.
+Run the tests for each affected module.
+For example, run a repository tab test:
+
 ```shell
-# Run a specific test: 
-./tests.cmd -Dintellij.build.test.patterns=com.intellij.util.ArrayUtilTest
+./tests.cmd --module intellij.platform.vcs.log.impl.tests --test com.intellij.vcs.log.impl.RepositoryLogTabWorkspaceTest
 ```
 
-To debug tests, use: `-Dintellij.build.test.debug.enabled=true -Dintellij.build.test.debug.suspend=true -Dintellij.build.test.debug.port=5005`.
+See [the testing guide](.agents/skills/testing/SKILL.md) for patterns and debug options.
+Changes to documentation alone do not require application tests.
 
-`tests.cmd` is used just to run [CommunityRunTestsBuildTarget](build/src/CommunityRunTestsBuildTarget.kt) from the command line.
-You can also call it directly from IDEA, see run configuration `tests` for an example.
+The release scripts have their own tests:
 
-## Keeping up-to-date with upstream
-
-I try to keep rebased up-to-date with the latest releases of the IntelliJ IDEs. Specifically, I use the `idea/*` release tags as a base for
-the Rebased releases. I aim to do a release within a few days of the upstream release.
-
-This section details how exactly I do upstream merges. This is primarily for my own reference and not really relevant to contributors. All
-you really need to know as a contributor is that if your change is specific to code not yet present in `master`, you may need to make your PR
-to [the current release branch](https://github.com/DetachHead/rebased/pulls?q=is%3Apr+label%3A%22release+branch%22) instead.
-
-### How upstream merging works
-
-The way upstream does releases is extremely convoluted. Changes are initially merged into `master`, then cherry-picked into an intermediary
-branch (eg. `262`), then cherry-picked into a release branch (eg. `262.8665`) where the tag is published (eg. `idea/2026.2`).
-
-Unfortunately, each of these branches can contain commits that never end up in `master`, or even other release branches. This means we can't
-just merge `upstream/master` into our own `master` branch to do releases, because it never contains the exact state of the code that's tied
-to specific releases.
-
-Here is a diagram demonstrating how I merge changes from upstream:
-
-```mermaid
----
-config:
-  gitGraph:
-    showCommitLabel: false
-    mainBranchName: 'upstream/master'
----
-      gitGraph
-        commit
-        commit
-
-        %% rebased initial fork
-        branch "master" order: 1
-        commit
-
-        %% upstream 2026.2
-        checkout "upstream/master"
-        commit 
-        branch "upstream/262"
-        commit 
-        branch "2026.2-base" %% branch made by us, not upstream
-        branch "upstream/262.8665"
-        commit
-        commit tag:"idea/2026.2"
-
-        %% merge 2026.2 and release v1.0.0
-        checkout "master"
-        branch "262" order: 2
-        merge "2026.2-base"
-        branch "release/2026.2" order: 3
-        merge "upstream/262.8665" tag: "1.0.0"
-        
-        %% more changes in rebased
-        checkout "master"
-        commit id:"feat1"
-        checkout "262"
-        cherry-pick id:"feat1"
-        checkout "release/2026.2"
-        cherry-pick id:"feat1"
-        checkout "master"
-        commit id:"feat2"
-        checkout "262"
-        cherry-pick id:"feat2"
-        checkout "release/2026.2"
-        cherry-pick id:"feat2" tag:"1.0.1"
-
-        %% upstream releases 2026.2.1
-        checkout "upstream/262"
-        commit
-        branch "2026.2.1-base" %% branch made by us, not upstream
-        branch "upstream/262.9437"
-        commit
-        commit tag:"idea/2026.2.1"
-
-        %% merge 2026.2.1 and release v1.0.2
-        checkout "262"
-        merge "2026.2.1-base"
-        branch "release/2026.2.1" order: 4
-        merge "upstream/262.9437" tag: "1.0.2"
-
-        %% upstream releases 2026.2.2
-        checkout "upstream/262"
-        commit
-        branch "2026.2.2-base" %% branch made by us, not upstream
-        branch "upstream/262.10315"
-        commit
-        commit tag:"idea/2026.2.2"
-
-        %% merge 2026.2.2 and release v1.0.3
-        checkout "262"
-        merge "2026.2.2-base"
-        branch "release/2026.2.2" order: 5
-        merge "upstream/262.10315" tag: "1.0.3"
-
-        checkout "upstream/master"
-        commit
-        commit
-        checkout master
-        merge "upstream/master"
+```shell
+node --test .github/scripts/prepare-release.test.mjs .github/scripts/release-version.test.mjs
 ```
 
-> [!NOTE]
-> - the `*-base` branches (eg. `2026.2-base`) are only created for the purpose of merging the *base* (ie. common ancestor) of two branches/tags (eg. `upstream/262` and `idea/2026.2`) into our own `262` branch. This prevents us having to re-resolve the same conflicts for every subsequent `2026.*` release
-> - This is not an accurate reflection of the history of this repo. The release tags are only examples and don't reflect the actual upstream version that those releases were based on.
+## Building a fork release
+
+The `master` branch contains the repository tabs feature and the fork release workflow.
+It can contain platform changes that upstream has not released.
+
+1. Test and push the commits to this fork.
+2. Open [the Rebased workflow](https://github.com/antoniocanzanella-precipoint/rebased/actions/workflows/IntelliJ_IDEA.yml).
+3. Select **Run workflow** and choose the tested branch.
+4. Enter a unique version, such as `1.1.22-precipoint.2`.
+5. Wait for all builds to finish.
+6. Open [Releases](https://github.com/antoniocanzanella-precipoint/rebased/releases).
+7. Review the draft and its assets before you publish it.
+
+The workflow uses the numeric part of the version for package builds.
+For example, the tag `1.1.22-precipoint.2` produces the package version `1.1.22`.
+
+The workflow checks 20 required assets before it creates a draft.
+The assets include Windows installers and ZIP files, macOS disk images, Linux archives, AppImages, update files, and software bills of materials.
+The check rejects missing files and empty files.
+
+The fork builds unsigned Windows installers.
+It skips upstream signing and upstream package publication.
+Fork releases start as draft prereleases.
+Use the release page for prerelease downloads.
+
+## Importing upstream changes
+
+Keep this fork's published history.
+Review upstream changes on a separate branch before integration.
+
+```shell
+git fetch --no-tags origin master
+git fetch --no-tags upstream master
+git switch -c codex/update-upstream origin/master
+git log --oneline origin/master..upstream/master
+git merge --no-commit --no-ff upstream/master
+```
+
+Inspect the merged changes before you commit them.
+Keep this fork's contribution policy, download links, and release settings when you resolve conflicts.
+Run the affected tests and review the diff.
+Then commit the merge and open a pull request against this fork.
+
+For selected fixes, use `git cherry-pick -x COMMIT` in place of the merge.
+Replace `COMMIT` with the source commit.
+The `-x` option records the source commit in the new commit message.
+
+Upstream Rebased manages its own IntelliJ release bases.
+Importing upstream `master` does not reproduce an upstream release.
+Use the relevant upstream release branch or tag when you need that release base.
+
+## Importing a feature from another repository
+
+Keep each imported feature in a separate branch.
+Replace the uppercase placeholders below with the source URL, branch, and commit.
+
+```shell
+git remote add feature-source SOURCE_REPOSITORY_URL
+git fetch --no-tags feature-source SOURCE_BRANCH
+git fetch --no-tags origin master
+git switch -c codex/import-feature origin/master
+git cherry-pick -x FEATURE_COMMIT
+```
+
+Register `feature-source` once for each source repository.
+Use a different remote name for another source repository.
+Import prerequisite commits first when a feature depends on them.
+
+Resolve conflicts and run the affected tests.
+Adapt the feature when the source uses a different platform version.
+Review the imported license notices.
+Include the source repository URL and commit references in the pull request.

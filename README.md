@@ -1,156 +1,160 @@
 <div align="center">
-  <img src="./community-resources/resources/rebased.svg" width="100" height="100" />  
-  <h1>Rebased</h1>
-  <p>A git client based on the IntelliJ platform.</p>
+  <img src="./community-resources/resources/rebased.svg" width="100" height="100" />
+  <h1>Rebased fork</h1>
+  <p>A Git client based on the IntelliJ platform.</p>
 </div>
 
-![](screenshot.png)
+This repository maintains an independent fork of [Rebased](https://github.com/DetachHead/rebased).
+The fork includes **Repositories by Branch** and accepts contributions from people and AI agents.
+
+Use [this repository](https://github.com/antoniocanzanella-precipoint/rebased) for the fork's code and contributions.
+Report problems in [the fork's issue tracker](https://github.com/antoniocanzanella-precipoint/rebased/issues).
+See [the contribution guide](CONTRIBUTING.md) for the AI policy, builds, and imports from other repositories.
+
+![Rebased](screenshot.png)
 
 ## Motivation
 
-Rebased is an open-source remake of the short-lived [jetbrains git client](https://youtrack.jetbrains.com/issue/IJPL-72504/Make-git-client-a-standalone-app#focus=Comments-27-12868395.0-0).
-It's basically just a JetBrains IDE with all the bundled plugins removed except the git integration, with some additional UI tweaks.
+Rebased provides the Git tools from the IntelliJ platform in a separate application.
+Upstream Rebased removes most bundled plugins and adds changes for Git work.
+This fork builds on that work and maintains additional features independently.
 
-See [this youtrack issue](https://youtrack.jetbrains.com/issue/IJPL-72504/Make-git-client-a-standalone-app) for the many reasons people have been requesting this for almost a decade. At the time of writing, it's the #3 most upvoted open issue on YouTrack.
+See [the original request for a separate Git client](https://youtrack.jetbrains.com/issue/IJPL-72504/Make-git-client-a-standalone-app).
 
 ## Installation
 
-### Linux
-
-We recommend installing the AppImage with with [AppManager](https://github.com/kem-a/AppManager) to install it to your applications menu, and for automatic updates:
-
-|Architecture|Install via AppManager|Manual Download|
-|-|-|-|
-|x86_64|[Install](https://detachhead.codeberg.page/urlwrapper/?url=appimg://install?url=https://github.com/DetachHead/rebased/releases/latest/download/Rebased-x86_64.AppImage)|[Download](https://github.com/DetachHead/rebased/releases/latest/download/Rebased-x86_64.AppImage)
-|aarch64|[Install](https://detachhead.codeberg.page/urlwrapper/?url=appimg://install?url=https://github.com/DetachHead/rebased/releases/latest/download/Rebased-aarch64.AppImage)|[Download](https://github.com/DetachHead/rebased/releases/latest/download/Rebased-aarch64.AppImage)
-
-Alternatively you can download the `.tar.gz` from [GitHub Releases](https://github.com/DetachHead/rebased/releases)
+Download packages from [the fork's releases](https://github.com/antoniocanzanella-precipoint/rebased/releases).
+The download links below use the published prerelease [1.1.22-precipoint.1](https://github.com/antoniocanzanella-precipoint/rebased/releases/tag/1.1.22-precipoint.1).
+Read the release notes for the features included in each build.
 
 ### Windows
 
-|Architecture|Installer|Portable `.zip`|
-|-|-|-|
-|x86_64|[Download](https://github.com/DetachHead/rebased/releases/latest/download/rebased.exe)|[Download](https://github.com/DetachHead/rebased/releases/latest/download/rebased.win.zip)|
-|aarch64|[Download](https://github.com/DetachHead/rebased/releases/latest/download/rebased-aarch64.exe)|[Download](https://github.com/DetachHead/rebased/releases/latest/download/rebased-aarch64.win.zip)|
+| Architecture | Installer | Portable ZIP |
+| --- | --- | --- |
+| x86_64 | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased.exe) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased.win.zip) |
+| aarch64 | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased-aarch64.exe) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased-aarch64.win.zip) |
 
-Alternatively you can install via winget:
+The Windows installers are unsigned.
 
-```ps1
-winget install detachhead.rebased --source winget
-```
+### Linux
 
-<table>
-  <tr>
-    <td><a href="https://signpath.io/"><img src="https://signpath.org/assets/favicon-50x50.png" alt="SignPath" width="32" /></a></td>
-    <td>Free code signing on Windows provided by <a href="https://signpath.io/">SignPath.io</a>, certificate by <a href="https://signpath.org/">SignPath Foundation</a></td>
-  </tr>
-</table>
+| Architecture | AppImage | Archive |
+| --- | --- | --- |
+| x86_64 | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/Rebased-x86_64.AppImage) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased.tar.gz) |
+| aarch64 | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/Rebased-aarch64.AppImage) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased-aarch64.tar.gz) |
 
 ### macOS
 
-Install with [homebrew](https://brew.sh/):
+| Architecture | Disk image |
+| --- | --- |
+| Apple Silicon (aarch64) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased-aarch64.dmg) |
+| Intel (x86_64) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased.dmg) |
 
-```bash
-brew install detachhead/tap/rebased
+For an unsigned build that macOS blocks, remove the quarantine attribute after you install it:
+
+```shell
+xattr -rd com.apple.quarantine /Applications/Rebased.app
 ```
 
-Alternatively you can download the `.dmg` manually:
+### Build from source
 
-> [!WARNING]
-> 
-> When installing the `.dmg` manually, you may see the following error message after copying `Rebased.app` to your Applications folder:
-> > "Rebased.app" is damaged and can't be opened. You should move it to the Bin.
-> 
-> **This is Apple lying to you.** Nothing is "damaged", it's just not code-signed with an Apple Developer certificate. To fix it, run the following command:
-> ```bash
-> xattr -rd com.apple.quarantine /Applications/Rebased.app
-> ```
+See [the build instructions](CONTRIBUTING.md#building-rebased).
+The `master` branch contains this fork's development version.
+It can contain platform changes that upstream has not released.
 
-|Architecture|Download|
-|-|-|
-|Apple Silicon (aarch64)|[Download](https://github.com/DetachHead/rebased/releases/latest/download/rebased-aarch64.dmg)|
-|Intel (x86_64)|[Download](https://github.com/DetachHead/rebased/releases/latest/download/rebased.dmg)|
+The upstream winget and Homebrew packages install upstream Rebased.
+Use this fork's downloads or source builds for the additional features.
 
-## Exclusive Features
+## Features
 
-In addition to all the git-related features from [IntelliJ IDEA Community Edition](https://github.com/jetbrains/intellij-community), Rebased has some additional features which aren't available in any of the official JetBrains IDEs.
+The fork retains the Git tools from [IntelliJ IDEA Community Edition](https://github.com/JetBrains/intellij-community) and upstream Rebased.
 
-### Customizable git log location
+### Repository log tabs by branch
 
-By default, the git log in Rebased is located in the main editor window, as the graph is typically the main focus of a git GUI client.
-However, if you prefer it to be in the tool window at the bottom like in JetBrains IDEs, you can disable this behavior:
+In the Log toolbar, select **Repositories by Branch** and enter a branch name.
+Select **Apply** to open the matching repository tabs.
+The option appears when the opened root repository has at least one submodule.
 
-1. Go to *Settings > Version Control > Log*
-2. Uncheck "Show the log in the editor window"
+Completion offers local and known remote branches from all Git repositories in the project.
+Matching ignores letter case and uses the complete branch name.
+Matches can include the root repository, initialized submodules, and other Git repositories registered in the project.
 
-### Option to disable the `.idea` directory
+Each matching repository gets a tab that shows all branches.
+Use the normal Log filters to narrow its history.
+The tabs stay in alphabetical order by repository name.
+Select **Show repository paths in tab titles** to display full paths.
 
-Unlike the `.vscode` directory, most of the config files generated by JetBrains IDEs are unfortunately not suitable to commit, as they often contain device-specific file paths that don't work if shared with other members of your team.
+Your previous tabs stay hidden while repository tabs appear.
+If no repository matches, the previous tabs appear while the branch stays selected.
+Closed tabs stay dismissed for the selected branch.
+Pinned tabs stay open during automatic updates.
+The branch, title setting, selected tab, and dismissed tabs survive a restart.
 
-Rebased is intended to be used with a wider variety of projects, which means you're more likely to use it with repos that weren't intended to be opened in a JetBrains IDE. This means `.idea` config files aren't committed nor are they excluded in `.gitignore`. This results in Rebased generating unwanted config files most of the time.
+Select **Clear** to close all additional Log tabs, including pinned tabs, and show one unfiltered Log.
+Other open files reappear.
+The checked out branches stay unchanged.
 
-To address this problem, Rebased allows you to disable the creation of the `.idea` directory in the project root:
+### Choose the Log location
 
-1. Go to *Settings > Appearance and Behavior > System Settings*
-2. Uncheck "Store project settings in the project root directory"
+The Log appears in the editor by default.
+To show it in the tool window:
 
-> [!NOTE]
-> This does not disable project-level config. Instead, Rebased will store each project's config inside a single centralized `.idea` directory in the same place as the IDE's global settings.
+1. Go to **Settings > Version Control > Log**.
+2. Clear **Show the log in the editor window**.
 
-### Option to disable indexing
+### Store project settings outside the project
 
-In order for the search feature to work reliably, JetBrains IDEs will scan and index all the files in your project. You can disable the indexing if you don't need to search your project with Rebased, if for example you use a separate IDE that has its own search functionality:
+To keep the `.idea` directory outside the project:
 
-1. Go to *Settings > Appearance and Behavior > System Settings*
-2. Uncheck "Enable indexing files for search"
+1. Go to **Settings > Appearance and Behavior > System Settings**.
+2. Clear **Store project settings in the project root directory**.
 
-> [!NOTE]
-> This does not entirely disable project analysis, as some scanning is still needed in order for Rebased to be able to track unversioned files to show in the git changes list.
+Rebased stores these project settings with its global settings.
+
+### Disable indexing
+
+To disable file indexing for search:
+
+1. Go to **Settings > Appearance and Behavior > System Settings**.
+2. Clear **Enable indexing files for search**.
+
+Rebased still scans files to track changes.
 
 ### Additional TextMate bundles
 
-IntelliJ Community Edition includes syntax highlighting for many languages, even when their corresponding language plugin is not installed, thanks to the [TextMate Bundles](https://plugins.jetbrains.com/plugin/7221) plugin.
-
-Unfortunately however, syntax highlighting is only available for some languages in their respective paid plugins/IDEs.
-
-One of the goals of Rebased is to prevent users from having to install bloated plugins when they only want basic editor/git functionality, so we ship some additional TextMate bundles that aren't present in IntelliJ:
-
-- [vue](https://github.com/vuejs/language-tools)
-
-(currently only one language, but feel free to open an [issue](https://github.com/DetachHead/rebased/issues/new/choose) or [PR](https://github.com/DetachHead/rebased/compare) for others)
+Rebased includes the [Vue TextMate bundle](https://github.com/vuejs/language-tools) for syntax highlighting.
+Suggest other bundles in [an issue](https://github.com/antoniocanzanella-precipoint/rebased/issues/new).
 
 ## Plugins
 
-### Compatibility disclaimer
-
-While installing plugins from the marketplace is supported, note that many of the core components otherwise present in every JetBrains IDE are disabled in Rebased. This means some plugins may not work properly (or at all) if they depend on such components.
-
-If you encounter any problems with a git-related plugin, you may open an issue, but keep in mind:
-
-- issues about language specific-plugins or other plugins that aren't related to git functionality are likely to be considered out-of-scope for Rebased, but will be assessed on a case-by-case basis
-- if fixing an issue with a git-related plugin requires re-enabling bloated IDE features that should otherwise not be required in a git client, it may still be considered out-of-scope
+You can install plugins from the JetBrains Marketplace.
+Some plugins require platform components that Rebased disables.
+Report problems with Git plugins in [this repository](https://github.com/antoniocanzanella-precipoint/rebased/issues).
 
 ### For plugin developers
 
-If you need to debug your plugin in Rebased, the IntelliJ platform gradle plugin [supports debugging with a local instance of the IDE](https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html#dependenciesLocalPlatform). You can configure it to use Rebased.
+The IntelliJ platform Gradle plugin supports [a local application instance](https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html#dependenciesLocalPlatform).
 
-> [!NOTE]
-> If you're on linux using the AppImage, you'll have to either extract or mount it first. If you're using AppManager, you can click "Extract AppImage". Alternatively you can run `./Rebased.AppImage --appimage-mount` to mount it instead.
-> 
-> Once mounted/extracted, set the `local` path to the `usr` directory inside the AppImage's filesystem, for example:
-> ```kts
-> dependencies {
->   intellijPlatform {
->     local("/tmp/.mount_Rebaseccgcph/usr")
->   }
-> }
-> ```
+```kts
+dependencies {
+  intellijPlatform {
+    local("/path/to/rebased")
+  }
+}
+```
+
+For an AppImage, extract or mount the image and select its `usr` directory.
 
 ## Contributing
 
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md)
+Contributions from people and AI agents are welcome.
+Contributors must review their changes and run the affected tests.
+See [the contribution guide](CONTRIBUTING.md).
 
-## Credits
+## Credits and licenses
 
-- https://github.com/obiscr/intellij-community - a previous attempt at creating a JetBrains git client that I cherrypicked some commits from
-- JetBrains (obviously)
+- [DetachHead/Rebased](https://github.com/DetachHead/rebased) provides the upstream Git client.
+- [JetBrains](https://github.com/JetBrains/intellij-community) provides the IntelliJ platform.
+- [obiscr/intellij-community](https://github.com/obiscr/intellij-community) provides earlier Git client work used by upstream Rebased.
+
+See [LICENSE.txt](LICENSE.txt), [NOTICE.txt](NOTICE.txt), and the license notices for individual components.

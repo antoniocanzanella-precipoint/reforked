@@ -201,6 +201,7 @@ jobs:
           suffix: -${{ matrix.arch.appimage }}.AppImage
           artifacts_dir: .
   sign-windows-exe:
+    if: github.repository == 'DetachHead/rebased'
     runs-on: ubuntu-latest
     needs: distributions
     strategy:
