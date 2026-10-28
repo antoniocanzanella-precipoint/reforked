@@ -126,7 +126,7 @@ open class RebasedProperties(private val communityHomeDir: Path) : JetBrainsProd
     }
 
     versionCheckerConfig = CE_CLASS_VERSIONS
-    baseDownloadUrl = "https://download.jetbrains.com/idea/"
+    baseDownloadUrl = "https://github.com/antoniocanzanella-precipoint/reforked/releases/latest/download/"
     buildDocAuthoringAssets = true
 
     @Suppress("SpellCheckingInspection")
@@ -135,7 +135,7 @@ open class RebasedProperties(private val communityHomeDir: Path) : JetBrainsProd
   }
 
   override val baseFileName: String
-    get() = "rebased"
+    get() = "reforked"
 
   override fun getProductContentDescriptor(): ProductModulesContentSpec = productModules {
     include(intellijCommunityBaseFragment(platformPrefix))
@@ -164,10 +164,10 @@ open class RebasedProperties(private val communityHomeDir: Path) : JetBrainsProd
   override fun createMacCustomizer(projectHome: Path): MacDistributionCustomizer = ideaCommunityMacCustomizer(communityHomeDir)
 
   override fun getSystemSelector(appInfo: ApplicationInfoProperties, buildNumber: String): String {
-    return "IdeaIC${appInfo.majorVersion}.${appInfo.minorVersionMainPart}"
+    return "Reforked${appInfo.majorVersion}.${appInfo.minorVersionMainPart}"
   }
 
-  override fun getBaseArtifactName(appInfo: ApplicationInfoProperties, buildNumber: String): String = "rebased"
+  override fun getBaseArtifactName(appInfo: ApplicationInfoProperties, buildNumber: String): String = "reforked"
 
   override fun getOutputDirectoryName(appInfo: ApplicationInfoProperties): String = "idea-ce"
 }
@@ -259,8 +259,8 @@ inline fun ideaCommunityWindowsCustomizer(
 ): WindowsDistributionCustomizer = windowsCustomizer(projectHome) {
   fileAssociations = emptyList()
 
-  fullName { "Rebased" }
-  installDirNameHandler { "Rebased" }
+  fullName { "Reforked" }
+  installDirNameHandler { "Reforked" }
 
   configure()
 }
@@ -269,12 +269,12 @@ inline fun ideaCommunityMacCustomizer(
   projectHome: Path,
   configure: MacCustomizerBuilder.() -> Unit = {}
 ): MacDistributionCustomizer = macCustomizer(projectHome) {
-  urlSchemes = listOf("rebased")
+  urlSchemes = listOf("reforked")
   associateIpr = true
   fileAssociations = emptyList()
-  bundleIdentifier = "io.github.detachhead.rebased"
+  bundleIdentifier = "io.github.antoniocanzanella-precipoint.reforked"
 
-  rootDirectoryName { _, _ -> "Rebased.app" }
+  rootDirectoryName { _, _ -> "Reforked.app" }
 
   // Rebased bundles no Kotlin plugin / kotlinc binaries, so don't declare executable patterns for them
   // (os_specific_distributions fails the build on patterns that match no files).
@@ -290,7 +290,7 @@ inline fun ideaCommunityLinuxCustomizer(
   configure: LinuxCustomizerBuilder.() -> Unit = {}
 ): LinuxDistributionCustomizer = linuxCustomizer(projectHome) {
 
-  rootDirectoryName { _, _ -> "idea-oss" }
+  rootDirectoryName { _, _ -> "reforked" }
 
   // Rebased bundles no Kotlin plugin / kotlinc binaries, so don't declare executable patterns for them
   // (os_specific_distributions fails the build on patterns that match no files).

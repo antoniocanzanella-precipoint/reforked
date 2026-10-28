@@ -1,3 +1,5 @@
+name: Upload Reforked packages
+description: Upload the packages, checksums, and software bills of materials.
 inputs:
   os:
     description: 'linux, windows or mac'
@@ -48,10 +50,10 @@ runs:
         retention-days: 1
         # TODO: fix this. the appimage has different capitalization, need to fix it in a way that doesnt break users' zsync updates
         path: |
-          ${{inputs.artifacts_dir}}/rebased${{inputs.suffix}}
-          ${{inputs.artifacts_dir}}/rebased${{inputs.suffix}}.spdx.json
-          ${{inputs.artifacts_dir}}/rebased${{inputs.suffix}}.sha256
-          ${{inputs.artifacts_dir}}/Rebased${{inputs.suffix}}
-          ${{inputs.artifacts_dir}}/Rebased${{inputs.suffix}}.spdx.json
-          ${{inputs.artifacts_dir}}/Rebased${{inputs.suffix}}.sha256
+          ${{inputs.artifacts_dir}}/reforked${{inputs.suffix}}
+          ${{inputs.artifacts_dir}}/reforked${{inputs.suffix}}.spdx.json
+          ${{inputs.artifacts_dir}}/reforked${{inputs.suffix}}.sha256
+          ${{inputs.artifacts_dir}}/Reforked${{inputs.suffix}}
+          ${{inputs.artifacts_dir}}/Reforked${{inputs.suffix}}.spdx.json
+          ${{inputs.artifacts_dir}}/Reforked${{inputs.suffix}}.sha256
           ${{inputs.artifacts_dir}}/*.zsync

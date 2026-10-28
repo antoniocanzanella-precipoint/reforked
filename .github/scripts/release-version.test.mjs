@@ -30,7 +30,7 @@ test('invalid versions fail before the package build starts', () => {
 });
 
 async function runWorkflowStep(t, env, buildVersion = '263.SNAPSHOT') {
-  const cwd = await mkdtemp(join(tmpdir(), 'rebased-version-'));
+  const cwd = await mkdtemp(join(tmpdir(), 'reforked-version-'));
   t.after(() => rm(cwd, { recursive: true, force: true }));
   const output = join(cwd, 'output');
   await writeFile(join(cwd, 'build.txt'), buildVersion);

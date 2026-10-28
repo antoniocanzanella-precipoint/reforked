@@ -276,7 +276,7 @@ object UpdateChecker {
   @JvmStatic
   @Throws(IOException::class, JDOMException::class)
   fun loadProductData(indicator: ProgressIndicator?): Product? {
-    val url = Urls.newFromEncoded("https://api.github.com/repos/detachHead/rebased/releases/latest")
+    val url = Urls.newFromEncoded("https://api.github.com/repos/antoniocanzanella-precipoint/reforked/releases/latest")
 
     return productDataLock.withLock {
       val cached = productDataCache?.get()

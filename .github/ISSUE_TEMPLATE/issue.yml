@@ -3,15 +3,11 @@ description: A generic issue
 body:
   - type: markdown
     attributes:
-      # this notice is needed because rebased seems to be quite popular in china and i dont speak chinese
       value: |
-        > [!IMPORTANT]
-        > I only speak English so please use English when opening issues on this project. If you aren't fluent in English, please use a translation tool if possible.
-        
-        > [!NOTE]
-        > I would prefer to make minimal changes to the platform to reduce the risk of unintended bugs or other complications when merging upstream, so if your bug or feature request affects the upstream IntelliJ platform, please find or open an issue on [YouTrack](https://youtrack.jetbrains.com).
-        > 
-        > You're free to open an upstream issue here if you believe it deserves extra attention, but please include a link to the YouTrack issue.
+        Describe the problem or feature for Reforked in English.
+        AI assistance is welcome.
+        Include the application version, operating system, and steps to reproduce a problem.
+        Link any related issue in upstream Rebased or [YouTrack](https://youtrack.jetbrains.com).
   - type: textarea
     validations:
       required: false

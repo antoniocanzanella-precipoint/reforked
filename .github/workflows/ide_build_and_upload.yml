@@ -149,7 +149,7 @@ jobs:
           #!/bin/bash
           export IDEA_RESTART_VIA_EXIT_CODE=88
           while true; do
-            "$APPDIR/usr/bin/rebased" "$@"
+            "$APPDIR/usr/bin/reforked" "$@"
             exit_code=$?
             if [ "$exit_code" -ne "$IDEA_RESTART_VIA_EXIT_CODE" ]; then
               exit "$exit_code"
@@ -159,21 +159,21 @@ jobs:
           chmod +x appdir/AppRun
           
           # Desktop file
-          cat > appdir/rebased.desktop <<'EOF'
+          cat > appdir/reforked.desktop <<'EOF'
           [Desktop Entry]
-          Name=Rebased
+          Name=Reforked
           Exec=AppRun
-          Icon=rebased
+          Icon=reforked
           Type=Application
           Categories=Development;IDE;
           Terminal=false
-          StartupWMClass=jetbrains-rebased
+          StartupWMClass=jetbrains-reforked
           StartupNotify=true
           X-AppImage-Version=${{inputs.version}}
           EOF
           
           # icon
-          ln -s usr/bin/rebased.png appdir/rebased.png
+          ln -s usr/bin/reforked.png appdir/reforked.png
 
       - name: Install appimagetool
         # this sucks. bash is the worst language ever made. appimagetool should be available on a package manager with lockfile support
@@ -192,7 +192,7 @@ jobs:
         env:
           ARCH: ${{ matrix.arch.appimage }}
         # language=bash
-        run: ./appimagetool appdir -u "gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|rebased|latest|Rebased-${{ matrix.arch.appimage }}.AppImage.zsync"
+        run: ./appimagetool appdir -u "gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|${GITHUB_REPOSITORY#*/}|latest|Reforked-${{ matrix.arch.appimage }}.AppImage.zsync"
 
       - name: Upload .AppImage
         uses: ./.github/actions/upload_ide

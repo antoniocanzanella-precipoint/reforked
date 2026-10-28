@@ -3,34 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rebased fork | Git logs by repository and branch</title>
-  <meta name="description" content="An independent Rebased Git client for Windows, macOS, and Linux. Open a Log tab for each repository that matches a branch. AI contributions are welcome.">
+  <title>Reforked | Git across your repositories</title>
+  <meta name="description" content="Reforked is a Git client for Windows, macOS, and Linux. Open a Log tab for each repository that matches a branch. AI contributions are welcome.">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <link rel="canonical" href="https://antoniocanzanella-precipoint.github.io/rebased/">
-  <link rel="icon" href="assets/rebased.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://antoniocanzanella-precipoint.github.io/reforked/">
+  <link rel="icon" href="assets/reforked.svg" type="image/svg+xml">
   <link rel="sitemap" href="sitemap.xml" type="application/xml">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Rebased fork | Git logs by repository and branch">
-  <meta property="og:description" content="Find repositories by branch and open their Git logs together. An independent Rebased fork that welcomes AI contributions.">
-  <meta property="og:url" content="https://antoniocanzanella-precipoint.github.io/rebased/">
-  <meta property="og:image" content="https://antoniocanzanella-precipoint.github.io/rebased/assets/screenshot.png">
-  <meta property="og:image:alt" content="The Rebased Git client with a commit graph and a file diff.">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:title" content="Reforked | Git across your repositories">
+  <meta property="og:description" content="Find repositories by branch and open their Git logs together. An independent Git client that welcomes AI contributions.">
+  <meta property="og:url" content="https://antoniocanzanella-precipoint.github.io/reforked/">
+  <meta property="og:image" content="https://antoniocanzanella-precipoint.github.io/reforked/assets/reforked.png">
+  <meta property="og:image:alt" content="The Reforked icon: an F-shaped Git branch with three nodes.">
+  <meta name="twitter:card" content="summary">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareSourceCode",
-      "name": "Rebased fork",
-      "description": "An independent Rebased Git client with repository Log tabs by branch and support for AI contributions.",
-      "url": "https://antoniocanzanella-precipoint.github.io/rebased/",
-      "codeRepository": "https://github.com/antoniocanzanella-precipoint/rebased/tree/master",
+      "name": "Reforked",
+      "description": "Reforked provides repository Log tabs by branch and accepts AI contributions.",
+      "url": "https://antoniocanzanella-precipoint.github.io/reforked/",
+      "codeRepository": "https://github.com/antoniocanzanella-precipoint/reforked/tree/master",
       "programmingLanguage": ["Kotlin", "Java"],
       "runtimePlatform": "IntelliJ Platform",
       "isBasedOn": "https://github.com/DetachHead/rebased"
     }
   </script>
   <style>
-    :root { color-scheme: light; --ink: #20252a; --muted: #59636d; --accent: #b9400b; --line: #e1e4e6; --paper: #faf9f6; }
+    :root { color-scheme: light; --ink: #20252a; --muted: #59636d; --accent: #116d66; --line: #e1e4e6; --paper: #faf9f6; }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; scroll-padding-top: 24px; }
     body { margin: 0; background: var(--paper); color: var(--ink); font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.65; }
@@ -90,28 +90,39 @@
   <a class="skip" href="#main">Skip to content</a>
   <header>
     <div class="wrap header-row">
-      <a class="brand" href="./"><img src="assets/rebased.svg" alt="" width="32" height="32"> Rebased fork</a>
+      <a class="brand" href="./"><img src="assets/reforked.svg" alt="" width="32" height="32"> Reforked</a>
       <nav aria-label="Main navigation">
+        <a href="#why-reforked">Why this fork</a>
         <a href="#features">Features</a>
         <a href="#downloads">Downloads</a>
-        <a href="https://github.com/antoniocanzanella-precipoint/rebased/tree/master">Source on master</a>
+        <a href="https://github.com/antoniocanzanella-precipoint/reforked/tree/master">Source on master</a>
       </nav>
     </div>
   </header>
   <main class="wrap" id="main">
     <div class="hero">
-      <p class="eyebrow">An independent Rebased fork</p>
-      <h1>Git logs for every matching repository.</h1>
+      <p class="eyebrow">An independent Git client</p>
+      <h1>Git across your repositories.</h1>
       <p class="lead">Find repositories by branch and open their Git logs together. Keep the IntelliJ Git tools in a separate desktop application.</p>
+      <p class="note">Reforked is an independent fork of Rebased. It welcomes reviewed contributions from people and AI agents.</p>
       <div class="actions">
-        <a class="button primary" href="https://github.com/antoniocanzanella-precipoint/rebased/releases">Download builds</a>
-        <a class="button" href="https://github.com/antoniocanzanella-precipoint/rebased/tree/master">View master on GitHub</a>
+        <a class="button primary" href="https://github.com/antoniocanzanella-precipoint/reforked/releases">Download builds</a>
+        <a class="button" href="https://github.com/antoniocanzanella-precipoint/reforked/tree/master">View master on GitHub</a>
       </div>
     </div>
     <figure>
       <img class="screenshot" src="assets/screenshot.png" alt="The Rebased Git client with a commit graph and a file diff." width="1583" height="919" fetchpriority="high">
-      <figcaption>Rebased provides a desktop interface for Git on Windows, macOS, and Linux.</figcaption>
+      <figcaption>Interface inherited from upstream Rebased. Reforked adds repository Log tabs by branch.</figcaption>
     </figure>
+    <section class="panel" id="why-reforked" aria-labelledby="story-title">
+      <h2 id="story-title">Why Reforked exists</h2>
+      <p>Reforked builds on Rebased, a Git client based on the IntelliJ platform.</p>
+      <p>Upstream Rebased does not accept AI-generated code. Reforked uses AI agents in development and accepts their contributions.</p>
+      <p>We maintain this fork so we can continue to add features and improvements under that contribution policy.</p>
+      <p>Contributors remain responsible for reviewing their changes and running the affected tests.</p>
+      <p>The fork keeps its connection to upstream. We can import upstream fixes and improvements while maintaining our own features and contribution policy.</p>
+      <p><a href="https://github.com/DetachHead/rebased/blob/master/CONTRIBUTING.md#ai-code-policy">Upstream contribution policy</a> · <a href="https://github.com/antoniocanzanella-precipoint/reforked/blob/master/CONTRIBUTING.md#ai-contribution-policy">Reforked contribution policy</a></p>
+    </section>
     <section id="features" aria-labelledby="features-title">
       <h2 id="features-title">Repositories by Branch</h2>
       <div class="grid">
@@ -138,23 +149,23 @@
       <p>The feature leaves the checked out branches unchanged.</p>
     </section>
     <section class="panel" id="downloads" aria-labelledby="downloads-title">
-      <h2 id="downloads-title">Get the fork</h2>
-      <p>Download the published prerelease <strong>1.1.22-precipoint.1</strong>. Packages support x86_64 and aarch64.</p>
+      <h2 id="downloads-title">Get Reforked</h2>
+      <p>The existing prerelease <strong>1.1.22-precipoint.1</strong> uses the Rebased name and icon. New packages built from master use Reforked.</p>
       <div class="platforms">
-        <div><h3>Windows</h3><p>Installers and portable ZIP files.</p><a href="https://github.com/antoniocanzanella-precipoint/rebased/releases/tag/1.1.22-precipoint.1">Windows downloads</a></div>
-        <div><h3>macOS</h3><p>Disk images for Apple Silicon and Intel.</p><a href="https://github.com/antoniocanzanella-precipoint/rebased/releases/tag/1.1.22-precipoint.1">macOS downloads</a></div>
-        <div><h3>Linux</h3><p>AppImages and archives.</p><a href="https://github.com/antoniocanzanella-precipoint/rebased/releases/tag/1.1.22-precipoint.1">Linux downloads</a></div>
+        <div><h3>Windows</h3><p>Installers and portable ZIP files.</p><a href="https://github.com/antoniocanzanella-precipoint/reforked/releases/tag/1.1.22-precipoint.1">Legacy Windows downloads</a></div>
+        <div><h3>macOS</h3><p>Disk images for Apple Silicon and Intel.</p><a href="https://github.com/antoniocanzanella-precipoint/reforked/releases/tag/1.1.22-precipoint.1">Legacy macOS downloads</a></div>
+        <div><h3>Linux</h3><p>AppImages and archives.</p><a href="https://github.com/antoniocanzanella-precipoint/reforked/releases/tag/1.1.22-precipoint.1">Legacy Linux downloads</a></div>
       </div>
       <p class="note">Windows installers are unsigned. Read the release notes for the features in each build.</p>
-      <p><a href="https://github.com/antoniocanzanella-precipoint/rebased/releases">Browse all releases</a> or <a href="https://github.com/antoniocanzanella-precipoint/rebased/blob/master/CONTRIBUTING.md#building-rebased">build from master</a>.</p>
+      <p><a href="https://github.com/antoniocanzanella-precipoint/reforked/releases">Browse all releases</a> or <a href="https://github.com/antoniocanzanella-precipoint/reforked/blob/master/CONTRIBUTING.md#building-reforked">build from master</a>.</p>
     </section>
     <section aria-labelledby="contribute-title">
       <h2 id="contribute-title">People and AI agents can contribute.</h2>
       <p>This fork accepts AI assistance and AI-generated code. Contributors must review their changes and run the affected tests.</p>
       <p>Keep each feature in separate commits. The contribution guide explains how to import changes from upstream or another repository.</p>
       <div class="actions">
-        <a class="button" href="https://github.com/antoniocanzanella-precipoint/rebased/blob/master/CONTRIBUTING.md">Read the contribution guide</a>
-        <a class="button" href="https://github.com/antoniocanzanella-precipoint/rebased/issues">Report a problem</a>
+        <a class="button" href="https://github.com/antoniocanzanella-precipoint/reforked/blob/master/CONTRIBUTING.md">Read the contribution guide</a>
+        <a class="button" href="https://github.com/antoniocanzanella-precipoint/reforked/issues">Report a problem</a>
       </div>
     </section>
   </main>
@@ -162,7 +173,7 @@
     <div class="wrap">
       <p>Maintained independently by <a href="https://github.com/antoniocanzanella-precipoint">antoniocanzanella-precipoint</a>.</p>
       <p>Based on <a href="https://github.com/DetachHead/rebased">Rebased by DetachHead</a> and the <a href="https://github.com/JetBrains/intellij-community">IntelliJ platform by JetBrains</a>.</p>
-      <p><a href="https://github.com/antoniocanzanella-precipoint/rebased/blob/master/LICENSE.txt">License terms</a> · <a href="https://github.com/antoniocanzanella-precipoint/rebased/blob/master/NOTICE.txt">Notices</a> · <a href="sitemap.xml">Sitemap</a></p>
+      <p><a href="https://github.com/antoniocanzanella-precipoint/reforked/blob/master/LICENSE.txt">License terms</a> · <a href="https://github.com/antoniocanzanella-precipoint/reforked/blob/master/NOTICE.txt">Notices</a> · <a href="sitemap.xml">Sitemap</a></p>
     </div>
   </footer>
 </body>

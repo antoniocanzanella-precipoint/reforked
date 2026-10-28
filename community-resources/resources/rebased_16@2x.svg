@@ -1,27 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0" stop-color="#FF7A1A"/>
-      <stop offset="0.55" stop-color="#FF5A00"/>
-      <stop offset="1" stop-color="#F23A00"/>
-    </linearGradient>
-  </defs>
-
-  <rect width="16" height="16" rx="2.5" fill="url(#bg)"/>
-
-  <path
-    d="M10.5 10.5L6 8L10.5 5.5L6 3V13"
-    fill="none"
-    stroke="#111"
-    stroke-width="1"
-    stroke-linejoin="round"
-    stroke-linecap="round"/>
-
-  <g fill="#111">
-    <circle cx="6" cy="3" r="1.7"/>
-    <circle cx="6" cy="8" r="1.7"/>
-    <circle cx="6" cy="13" r="1.7"/>
-    <circle cx="10.3" cy="5.5" r="1.7"/>
-    <circle cx="10.3" cy="10.5" r="1.7"/>
-  </g>
+<!-- Copyright 2026 Reforked contributors. Use of this source code is governed by the Apache 2.0 license. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16" fill="none">
+  <rect width="16" height="16" rx="3" fill="#12212F"/>
+  <path d="M5.5 12V4H11M5.5 8H10" stroke="#54D6C7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="5.5" cy="12" r="1.5" fill="#54D6C7"/>
+  <circle cx="11" cy="4" r="1.5" fill="#54D6C7"/>
+  <circle cx="10" cy="8" r="1.5" fill="#54D6C7"/>
 </svg>

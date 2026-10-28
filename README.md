@@ -1,56 +1,63 @@
 <div align="center">
-  <img src="./community-resources/resources/rebased.svg" width="100" height="100" />
-  <h1>Rebased fork</h1>
-  <p>A Git client based on the IntelliJ platform.</p>
+  <img src="./docs/assets/reforked.svg" width="100" height="100" />
+  <h1>Reforked</h1>
+  <p>Git across your repositories.</p>
 </div>
 
-This repository maintains an independent fork of [Rebased](https://github.com/DetachHead/rebased).
-The fork includes **Repositories by Branch** and accepts contributions from people and AI agents.
+Reforked is an independent fork of [Rebased](https://github.com/DetachHead/rebased).
+Reforked includes **Repositories by Branch** and accepts contributions from people and AI agents.
 
-Visit [the project site](https://antoniocanzanella-precipoint.github.io/rebased/) for features, downloads, and links to the source on `master`.
+Visit [the project site](https://antoniocanzanella-precipoint.github.io/reforked/) for features, downloads, and links to the source on `master`.
 
-Use [this repository](https://github.com/antoniocanzanella-precipoint/rebased) for the fork's code and contributions.
-Report problems in [the fork's issue tracker](https://github.com/antoniocanzanella-precipoint/rebased/issues).
+Use [this repository](https://github.com/antoniocanzanella-precipoint/reforked) for the fork's code and contributions.
+Report problems in [the fork's issue tracker](https://github.com/antoniocanzanella-precipoint/reforked/issues).
 See [the contribution guide](CONTRIBUTING.md) for the AI policy, builds, and imports from other repositories.
 
-![Rebased](screenshot.png)
+![The interface inherited from Rebased](screenshot.png)
 
 ## Motivation
 
-Rebased provides the Git tools from the IntelliJ platform in a separate application.
+Reforked provides the Git tools from the IntelliJ platform in a separate application.
 Upstream Rebased removes most bundled plugins and adds changes for Git work.
-This fork builds on that work and maintains additional features independently.
+Reforked builds on that work and maintains additional features independently.
+
+Upstream Rebased does not accept AI-generated code.
+Reforked accepts contributions from people and AI agents, with review and the affected tests.
+See [why this fork exists](https://antoniocanzanella-precipoint.github.io/reforked/#why-reforked).
 
 See [the original request for a separate Git client](https://youtrack.jetbrains.com/issue/IJPL-72504/Make-git-client-a-standalone-app).
 
 ## Installation
 
-Download packages from [the fork's releases](https://github.com/antoniocanzanella-precipoint/rebased/releases).
-The download links below use the published prerelease [1.1.22-precipoint.1](https://github.com/antoniocanzanella-precipoint/rebased/releases/tag/1.1.22-precipoint.1).
+Download packages from [the fork's releases](https://github.com/antoniocanzanella-precipoint/reforked/releases).
+The download links below use the published prerelease [1.1.22-precipoint.1](https://github.com/antoniocanzanella-precipoint/reforked/releases/tag/1.1.22-precipoint.1).
 Read the release notes for the features included in each build.
 
-### Windows
+The existing prerelease uses the Rebased name and icon.
+New packages built from `master` use Reforked.
+
+### Legacy Windows packages
 
 | Architecture | Installer | Portable ZIP |
 | --- | --- | --- |
-| x86_64 | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased.exe) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased.win.zip) |
-| aarch64 | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased-aarch64.exe) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased-aarch64.win.zip) |
+| x86_64 | [Download](https://github.com/antoniocanzanella-precipoint/reforked/releases/download/1.1.22-precipoint.1/rebased.exe) | [Download](https://github.com/antoniocanzanella-precipoint/reforked/releases/download/1.1.22-precipoint.1/rebased.win.zip) |
+| aarch64 | [Download](https://github.com/antoniocanzanella-precipoint/reforked/releases/download/1.1.22-precipoint.1/rebased-aarch64.exe) | [Download](https://github.com/antoniocanzanella-precipoint/reforked/releases/download/1.1.22-precipoint.1/rebased-aarch64.win.zip) |
 
 The Windows installers are unsigned.
 
-### Linux
+### Legacy Linux packages
 
 | Architecture | AppImage | Archive |
 | --- | --- | --- |
-| x86_64 | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/Rebased-x86_64.AppImage) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased.tar.gz) |
-| aarch64 | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/Rebased-aarch64.AppImage) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased-aarch64.tar.gz) |
+| x86_64 | [Download](https://github.com/antoniocanzanella-precipoint/reforked/releases/download/1.1.22-precipoint.1/Rebased-x86_64.AppImage) | [Download](https://github.com/antoniocanzanella-precipoint/reforked/releases/download/1.1.22-precipoint.1/rebased.tar.gz) |
+| aarch64 | [Download](https://github.com/antoniocanzanella-precipoint/reforked/releases/download/1.1.22-precipoint.1/Rebased-aarch64.AppImage) | [Download](https://github.com/antoniocanzanella-precipoint/reforked/releases/download/1.1.22-precipoint.1/rebased-aarch64.tar.gz) |
 
-### macOS
+### Legacy macOS packages
 
 | Architecture | Disk image |
 | --- | --- |
-| Apple Silicon (aarch64) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased-aarch64.dmg) |
-| Intel (x86_64) | [Download](https://github.com/antoniocanzanella-precipoint/rebased/releases/download/1.1.22-precipoint.1/rebased.dmg) |
+| Apple Silicon (aarch64) | [Download](https://github.com/antoniocanzanella-precipoint/reforked/releases/download/1.1.22-precipoint.1/rebased-aarch64.dmg) |
+| Intel (x86_64) | [Download](https://github.com/antoniocanzanella-precipoint/reforked/releases/download/1.1.22-precipoint.1/rebased.dmg) |
 
 For an unsigned build that macOS blocks, remove the quarantine attribute after you install it:
 
@@ -58,9 +65,11 @@ For an unsigned build that macOS blocks, remove the quarantine attribute after y
 xattr -rd com.apple.quarantine /Applications/Rebased.app
 ```
 
+New macOS packages use `/Applications/Reforked.app`.
+
 ### Build from source
 
-See [the build instructions](CONTRIBUTING.md#building-rebased).
+See [the build instructions](CONTRIBUTING.md#building-reforked).
 The `master` branch contains this fork's development version.
 It can contain platform changes that upstream has not released.
 
@@ -111,7 +120,7 @@ To keep the `.idea` directory outside the project:
 1. Go to **Settings > Appearance and Behavior > System Settings**.
 2. Clear **Store project settings in the project root directory**.
 
-Rebased stores these project settings with its global settings.
+Reforked stores these project settings with its global settings.
 
 ### Disable indexing
 
@@ -120,18 +129,18 @@ To disable file indexing for search:
 1. Go to **Settings > Appearance and Behavior > System Settings**.
 2. Clear **Enable indexing files for search**.
 
-Rebased still scans files to track changes.
+Reforked still scans files to track changes.
 
 ### Additional TextMate bundles
 
-Rebased includes the [Vue TextMate bundle](https://github.com/vuejs/language-tools) for syntax highlighting.
-Suggest other bundles in [an issue](https://github.com/antoniocanzanella-precipoint/rebased/issues/new).
+Reforked includes the [Vue TextMate bundle](https://github.com/vuejs/language-tools) for syntax highlighting.
+Suggest other bundles in [an issue](https://github.com/antoniocanzanella-precipoint/reforked/issues/new).
 
 ## Plugins
 
 You can install plugins from the JetBrains Marketplace.
-Some plugins require platform components that Rebased disables.
-Report problems with Git plugins in [this repository](https://github.com/antoniocanzanella-precipoint/rebased/issues).
+Some plugins require platform components that Reforked disables.
+Report problems with Git plugins in [this repository](https://github.com/antoniocanzanella-precipoint/reforked/issues).
 
 ### For plugin developers
 
@@ -140,7 +149,7 @@ The IntelliJ platform Gradle plugin supports [a local application instance](http
 ```kts
 dependencies {
   intellijPlatform {
-    local("/path/to/rebased")
+    local("/path/to/reforked")
   }
 }
 ```

@@ -1,3 +1,5 @@
+name: Build Reforked
+description: Build the desktop packages for Reforked.
 inputs:
   product:
     description: 'a product, available options: intellij_idea, pycharm'

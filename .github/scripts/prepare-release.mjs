@@ -14,16 +14,16 @@ export function releaseAssets(signedWindows) {
     { suffix: '', arch: 'x64', appImageArch: 'x86_64' },
     { suffix: '-aarch64', arch: 'aarch64', appImageArch: 'aarch64' },
   ]) {
-    addWithSbom(`linux${suffix}.tar.gz-unsigned`, `rebased${suffix}.tar.gz`);
-    add(`linux-${appImageArch}.AppImage-unsigned`, `Rebased-${appImageArch}.AppImage`);
-    add(`linux-${appImageArch}.AppImage-unsigned`, `Rebased-${appImageArch}.AppImage.zsync`);
+    addWithSbom(`linux${suffix}.tar.gz-unsigned`, `reforked${suffix}.tar.gz`);
+    add(`linux-${appImageArch}.AppImage-unsigned`, `Reforked-${appImageArch}.AppImage`);
+    add(`linux-${appImageArch}.AppImage-unsigned`, `Reforked-${appImageArch}.AppImage.zsync`);
     addWithSbom(
       signedWindows ? `windows-signed-${arch}` : `windows${suffix}.exe-unsigned`,
-      `rebased${suffix}.exe`,
+      `reforked${suffix}.exe`,
     );
-    addWithSbom(`windows${suffix}.win.zip-unsigned`, `rebased${suffix}.win.zip`);
-    add(`mac${suffix}.dmg-unsigned`, `rebased${suffix}.dmg`);
-    add(`mac${suffix}.sit-unsigned`, `rebased${suffix}.sit.spdx.json`);
+    addWithSbom(`windows${suffix}.win.zip-unsigned`, `reforked${suffix}.win.zip`);
+    add(`mac${suffix}.dmg-unsigned`, `reforked${suffix}.dmg`);
+    add(`mac${suffix}.sit-unsigned`, `reforked${suffix}.sit.spdx.json`);
   }
   return assets;
 }

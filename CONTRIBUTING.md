@@ -1,6 +1,6 @@
 # Contributing
 
-This guide applies to [this fork](https://github.com/antoniocanzanella-precipoint/rebased).
+This guide applies to [this fork](https://github.com/antoniocanzanella-precipoint/reforked).
 [Upstream Rebased](https://github.com/DetachHead/rebased) has its own contribution policy.
 
 ## AI contribution policy
@@ -19,7 +19,7 @@ Contributors remain responsible for each submitted change:
 
 ## Submit a change
 
-Report problems and propose features in [this fork's issue tracker](https://github.com/antoniocanzanella-precipoint/rebased/issues).
+Report problems and propose features in [this fork's issue tracker](https://github.com/antoniocanzanella-precipoint/reforked/issues).
 You can submit a pull request without an assigned issue.
 Discuss large changes before implementation to confirm the scope.
 
@@ -45,8 +45,8 @@ git config --global core.autocrlf input
 Clone this fork and register upstream Rebased:
 
 ```shell
-git clone https://github.com/antoniocanzanella-precipoint/rebased.git
-cd rebased
+git clone https://github.com/antoniocanzanella-precipoint/reforked.git
+cd reforked
 git remote add upstream https://github.com/DetachHead/rebased.git
 git config remote.pushDefault origin
 ```
@@ -55,13 +55,13 @@ Use these remote names:
 
 | Remote | Repository | Purpose |
 | --- | --- | --- |
-| `origin` | `antoniocanzanella-precipoint/rebased` | Develop and publish this fork. |
+| `origin` | `antoniocanzanella-precipoint/reforked` | Develop and publish this fork. |
 | `upstream` | `DetachHead/rebased` | Review and import upstream changes. |
 
 The `master` branch contains this fork's development version.
 The release tags identify the source used for published packages.
 
-## Building Rebased
+## Building Reforked
 
 ### Open the project in IntelliJ IDEA
 
@@ -136,21 +136,29 @@ Update the sitemap date when the page content changes.
 The page permits indexing and includes its text in the HTML.
 Google controls when the site appears in search results.
 
+## Maintaining the branding
+
+Use Reforked in visible names, package names, and public links.
+The icon source is `docs/assets/reforked.svg`.
+Keep the desktop icons and installer images consistent with that source.
+The application keeps the upstream `Rebased` platform prefix and internal resource paths.
+Keep these internal names consistent when you import upstream changes.
+
 ## Building a fork release
 
 The `master` branch contains the repository tabs feature and the fork release workflow.
 It can contain platform changes that upstream has not released.
 
 1. Test and push the commits to this fork.
-2. Open [the Rebased workflow](https://github.com/antoniocanzanella-precipoint/rebased/actions/workflows/IntelliJ_IDEA.yml).
+2. Open [the Reforked workflow](https://github.com/antoniocanzanella-precipoint/reforked/actions/workflows/IntelliJ_IDEA.yml).
 3. Select **Run workflow** and choose the tested branch.
-4. Enter a unique version, such as `1.1.22-precipoint.2`.
+4. Enter a unique version, such as `1.2.0-preview.1`.
 5. Wait for all builds to finish.
-6. Open [Releases](https://github.com/antoniocanzanella-precipoint/rebased/releases).
+6. Open [Releases](https://github.com/antoniocanzanella-precipoint/reforked/releases).
 7. Review the draft and its assets before you publish it.
 
 The workflow uses the numeric part of the version for package builds.
-For example, the tag `1.1.22-precipoint.2` produces the package version `1.1.22`.
+For example, the tag `1.2.0-preview.1` produces the package version `1.2.0`.
 
 The workflow checks 20 required assets before it creates a draft.
 The assets include Windows installers and ZIP files, macOS disk images, Linux archives, AppImages, update files, and software bills of materials.
@@ -160,6 +168,8 @@ The fork builds unsigned Windows installers.
 It skips upstream signing and upstream package publication.
 Fork releases start as draft prereleases.
 Use the release page for prerelease downloads.
+The app checks stable releases from this repository.
+Use a numeric tag and clear the prerelease flag when you publish a stable release.
 
 ## Importing upstream changes
 
@@ -175,7 +185,7 @@ git merge --no-commit --no-ff upstream/master
 ```
 
 Inspect the merged changes before you commit them.
-Keep this fork's contribution policy, download links, and release settings when you resolve conflicts.
+Keep the Reforked names, icons, contribution policy, download links, and release settings when you resolve conflicts.
 Run the affected tests and review the diff.
 Then commit the merge and open a pull request against this fork.
 
