@@ -17,6 +17,10 @@ on:
         type: string
         description: 'build number'
         required: true
+      unsigned_shell_test:
+        type: boolean
+        description: 'Include the unsigned Windows 11 menu test package (administrator permission required; keep this release as a draft)'
+        default: false
 
 permissions:
   contents: read
@@ -36,11 +40,17 @@ jobs:
         run: |
           node --test .github/scripts/prepare-release.test.mjs .github/scripts/release-version.test.mjs \
             .github/scripts/verify-bundled-plugins.test.mjs
+          python3 .github/scripts/verify-windows-shell.test.py
       - name: get build number
         id: get_version
         env:
           INPUT_VERSION: ${{ inputs.version }}
         run: node .github/scripts/release-version.mjs
+      - name: Require consent for the unsigned test package
+        if: github.event_name == 'workflow_dispatch' && !inputs.unsigned_shell_test
+        run: |
+          echo 'Enable unsigned_shell_test for this draft prerelease. A trusted signing setup is required for public distribution.' >&2
+          exit 1
 
   build:
     needs: get_version
@@ -71,6 +81,18 @@ jobs:
       - name: Check and collect release assets
         run: node .github/scripts/prepare-release.mjs artifacts release-assets
 
+      - name: Describe the test package
+        run: |
+          cat > release-notes.md <<'EOF'
+          This draft prerelease includes an unsigned Windows 11 context-menu test package.
+          Install it from an administrator account and approve that account's permission prompt.
+          Keep this release as a draft for testing.
+          A trusted signing certificate is required before broad distribution.
+
+          Changes include the first Explorer context menu, Open with support for 218 technical file types,
+          and the larger Git-branch logo throughout the application and installers.
+          EOF
+
       - name: Create Release
         # the maintainer said they archived this action because "there are much better alternatives these days"
         # but i have yet to find a single alternative that works the way i want (automatically creates the tag)
@@ -82,3 +104,8 @@ jobs:
           prerelease: ${{ github.repository != 'DetachHead/rebased' }}
           draft: true
           files: release-assets/*
+      - name: Add the test package notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ needs.get_version.outputs.version }}
+        run: gh release edit "$RELEASE_VERSION" --notes-file release-notes.md

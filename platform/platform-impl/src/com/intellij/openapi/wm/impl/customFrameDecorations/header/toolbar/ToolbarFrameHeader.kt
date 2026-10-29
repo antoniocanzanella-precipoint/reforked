@@ -7,6 +7,7 @@ import com.intellij.ide.ui.UISettings
 import com.intellij.ide.ui.UISettingsListener
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.CustomShortcutSet
+import com.intellij.openapi.application.ApplicationNamesInfo
 import com.intellij.openapi.application.EDT
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.application.asContextElement
@@ -77,6 +78,7 @@ internal class ToolbarFrameHeader(
   private val isFullScreen: () -> Boolean,
   private val projectFrameTypeIdProvider: () -> String?,
 ) : FrameHeader(frame), UISettingsListener, ToolbarHolder, MainFrameCustomHeader {
+  private val isReforked = ApplicationNamesInfo.getInstance().productName == "Reforked"
   private val ideMenuHelper = IdeMenuHelper(menu = ideMenuBar, coroutineScope = coroutineScope)
   private val menuBarHeaderTitle = SimpleCustomDecorationPathComponent(frame = frame, isGrey = {true}).apply {
     isOpaque = false
@@ -127,7 +129,9 @@ internal class ToolbarFrameHeader(
       }
     }
 
-    productIcon.border = JBUI.Borders.empty(V, 0, V, 0)
+    val productIconMargin = if (isReforked) 4 else V
+    productIcon.border = JBUI.Borders.empty(productIconMargin, 0, productIconMargin, 0)
+    updateProductIconLayout()
 
     fillContent(WindowButtonsConfiguration.getInstance()?.state)
     WindowButtonsConfiguration.getInstance()?.let {
@@ -193,6 +197,7 @@ internal class ToolbarFrameHeader(
           isCompactHeader = compactHeader
 
           withContext(Dispatchers.EDT) {
+            updateProductIconLayout()
             buttonPanes?.isCompactMode = isCompactHeader
             val size = if (isCompactHeader) {
               JBDimension(HEADER_HEIGHT_DFM, HEADER_HEIGHT_DFM)
@@ -223,6 +228,12 @@ internal class ToolbarFrameHeader(
     return false
   }
 
+  private fun updateProductIconLayout() {
+    if (isReforked) {
+      updateProductIconSize(CustomWindowHeaderUtil.getPreferredWindowHeaderHeightUnscaled(isCompactHeader) - 8)
+    }
+  }
+
   override fun doLayout() {
     super.doLayout()
 
@@ -246,7 +257,7 @@ internal class ToolbarFrameHeader(
 
     val gb = GridBag().anchor(WEST)
     if (state == null || state.rightPosition) {
-      add(productIcon, gb.nextLine().next().anchor(WEST).insetLeft(H))
+      add(productIcon, gb.nextLine().next().anchor(WEST).insetLeft(if (isReforked) 4 else H))
       add(headerContent, gb.next().fillCell().anchor(GridBagConstraints.CENTER).weightx(1.0).weighty(1.0))
       buttonPanes?.let { add(wrap(it.getContent()), gb.next().anchor(GridBagConstraints.EAST)) }
       updateHeaderContentBorder(true)
@@ -501,7 +512,7 @@ internal class ToolbarFrameHeader(
   }
 
   private fun updateHeaderContentBorder(iconRightPosition: Boolean) {
-    headerContent.border = JBUI.Borders.emptyLeft(JBUI.scale(if (iconRightPosition) 16 else 4))
+    headerContent.border = JBUI.Borders.emptyLeft(if (isReforked) 4 else JBUI.scale(if (iconRightPosition) 16 else 4))
   }
 
   private fun updateLayout() {

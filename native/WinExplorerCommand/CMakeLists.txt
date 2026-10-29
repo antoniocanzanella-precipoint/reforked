@@ -11,6 +11,8 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/shell.properties" MENU_TITLE_LINE REGEX "^menu.open.folder=")
 string(REGEX REPLACE "^menu.open.folder=" "" MENU_TITLE "${MENU_TITLE_LINE}")
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/shell.properties" FILE_MENU_TITLE_LINE REGEX "^menu.edit.file=")
+string(REGEX REPLACE "^menu.edit.file=" "" FILE_MENU_TITLE "${FILE_MENU_TITLE_LINE}")
 configure_file(resources.rc.in resources.rc @ONLY)
 
 add_library(reforked-shell SHARED explorer_command.cpp exports.def "${CMAKE_CURRENT_BINARY_DIR}/resources.rc")

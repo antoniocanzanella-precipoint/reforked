@@ -47,14 +47,21 @@ std::wstring quoteArgument(const wchar_t* value) {
   return quoted;
 }
 
-class __declspec(uuid("9FAD6B45-367B-4F7E-A862-4E7E287FC017")) FolderCommand final
+enum class SelectionKind { Unsupported, Files, Folders };
+
+class __declspec(uuid("9FAD6B45-367B-4F7E-A862-4E7E287FC017")) ExplorerCommand final
   : public RuntimeClass<RuntimeClassFlags<ClassicCom>, IExplorerCommand, IObjectWithSite> {
 public:
-  IFACEMETHODIMP GetTitle(IShellItemArray*, PWSTR* title) override {
+  IFACEMETHODIMP GetTitle(IShellItemArray* items, PWSTR* title) override {
     if (!title) return E_POINTER;
     *title = nullptr;
+    SelectionKind kind = SelectionKind::Folders;
+    if (items) {
+      const HRESULT result = selectionKind(items, kind);
+      if (FAILED(result)) return result;
+    }
     wchar_t text[256];
-    if (!LoadStringW(moduleHandle, 101, text, ARRAYSIZE(text))) return E_FAIL;
+    if (!LoadStringW(moduleHandle, kind == SelectionKind::Files ? 102 : 101, text, ARRAYSIZE(text))) return E_FAIL;
     return SHStrDupW(text, title);
   }
 
@@ -76,42 +83,27 @@ public:
 
   IFACEMETHODIMP GetCanonicalName(GUID* name) override {
     if (!name) return E_POINTER;
-    *name = __uuidof(FolderCommand);
+    *name = __uuidof(ExplorerCommand);
     return S_OK;
   }
 
   IFACEMETHODIMP GetState(IShellItemArray* items, BOOL, EXPCMDSTATE* state) override {
     if (!state) return E_POINTER;
     *state = ECS_HIDDEN;
-    DWORD count = 0;
-    if (!items) {
-      ComPtr<IShellItem> folder;
-      if (SUCCEEDED(backgroundFolder(&folder))) *state = ECS_ENABLED;
-      return S_OK;
-    }
-    HRESULT result = items->GetCount(&count);
+    SelectionKind kind;
+    const HRESULT result = selectionKind(items, kind);
     if (FAILED(result)) return result;
-    if (count == 0) {
-      ComPtr<IShellItem> folder;
-      if (SUCCEEDED(backgroundFolder(&folder))) *state = ECS_ENABLED;
-      return S_OK;
-    }
-    for (DWORD index = 0; index < count; ++index) {
-      ComPtr<IShellItem> item;
-      result = items->GetItemAt(index, &item);
-      if (FAILED(result)) return result;
-      SFGAOF attributes = 0;
-      result = item->GetAttributes(SFGAO_FOLDER | SFGAO_FILESYSTEM, &attributes);
-      if (FAILED(result)) return result;
-      if (attributes != (SFGAO_FOLDER | SFGAO_FILESYSTEM)) return S_OK;
-    }
-    *state = ECS_ENABLED;
+    if (kind != SelectionKind::Unsupported) *state = ECS_ENABLED;
     return S_OK;
   }
 
   IFACEMETHODIMP Invoke(IShellItemArray* items, IBindCtx*) override {
+    SelectionKind kind;
+    HRESULT result = selectionKind(items, kind);
+    if (FAILED(result)) return result;
+    if (kind == SelectionKind::Unsupported) return E_INVALIDARG;
     std::wstring launcher;
-    HRESULT result = launcherPath(launcher);
+    result = launcherPath(launcher);
     if (FAILED(result)) return result;
     DWORD count = 0;
     if (items) {
@@ -166,6 +158,40 @@ public:
 private:
   ComPtr<IUnknown> site_;
 
+  HRESULT selectionKind(IShellItemArray* items, SelectionKind& kind) {
+    kind = SelectionKind::Unsupported;
+    DWORD count = 0;
+    if (items) {
+      const HRESULT result = items->GetCount(&count);
+      if (FAILED(result)) return result;
+    }
+    if (count == 0) {
+      ComPtr<IShellItem> folder;
+      if (SUCCEEDED(backgroundFolder(&folder))) kind = SelectionKind::Folders;
+      return S_OK;
+    }
+    for (DWORD index = 0; index < count; ++index) {
+      ComPtr<IShellItem> item;
+      HRESULT result = items->GetItemAt(index, &item);
+      if (FAILED(result)) return result;
+      SFGAOF attributes = 0;
+      result = item->GetAttributes(SFGAO_FOLDER | SFGAO_FILESYSTEM | SFGAO_STREAM, &attributes);
+      if (FAILED(result)) return result;
+      if (!(attributes & SFGAO_FILESYSTEM)) {
+        kind = SelectionKind::Unsupported;
+        return S_OK;
+      }
+      const SelectionKind itemKind = (attributes & SFGAO_FOLDER) && !(attributes & SFGAO_STREAM)
+        ? SelectionKind::Folders : SelectionKind::Files;
+      if (index != 0 && kind != itemKind) {
+        kind = SelectionKind::Unsupported;
+        return S_OK;
+      }
+      kind = itemKind;
+    }
+    return S_OK;
+  }
+
   HRESULT backgroundFolder(IShellItem** folder) {
     if (!folder) return E_POINTER;
     *folder = nullptr;
@@ -197,7 +223,7 @@ public:
     if (!object) return E_POINTER;
     *object = nullptr;
     if (outer) return CLASS_E_NOAGGREGATION;
-    auto command = Make<FolderCommand>();
+    auto command = Make<ExplorerCommand>();
     return command ? command->QueryInterface(iid, object) : E_OUTOFMEMORY;
   }
 
@@ -220,7 +246,7 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, void*) {
 STDAPI DllGetClassObject(REFCLSID clsid, REFIID iid, void** object) {
   if (!object) return E_POINTER;
   *object = nullptr;
-  if (clsid != __uuidof(FolderCommand)) return CLASS_E_CLASSNOTAVAILABLE;
+  if (clsid != __uuidof(ExplorerCommand)) return CLASS_E_CLASSNOTAVAILABLE;
   auto factory = Make<Factory>();
   return factory ? factory->QueryInterface(iid, object) : E_OUTOFMEMORY;
 }

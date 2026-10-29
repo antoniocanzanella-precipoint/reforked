@@ -2,7 +2,7 @@
 .SYNOPSIS
 Build the Reforked folder command and its package.
 .DESCRIPTION
-Use a trusted certificate for a release package. An unsigned package is for build checks only.
+Use a trusted certificate for a release package. Use -UnsignedTest only for an unsigned test package that requires administrator installation.
 Pass the parent output directory to the installer build with -Dintellij.build.reforked.windows.shell.root=<directory>.
 Build x64 and arm64 outputs before a build for both architectures.
 #>
@@ -11,12 +11,35 @@ param(
   [version] $Version = '1.0.0.0',
   [string] $Publisher = 'CN=Reforked',
   [string] $CertificateThumbprint,
+  [switch] $UnsignedTest,
   [string] $TimestampUrl,
   [string] $OutputDirectory
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+
+function Get-ReforkedPackageVersion([version] $Value) {
+  $parts = @($Value.Major, $Value.Minor, [Math]::Max(0, $Value.Build), [Math]::Max(0, $Value.Revision))
+  foreach ($part in $parts) {
+    if ($part -lt 0 -or $part -gt 65535) { throw 'Each package version part must be between 0 and 65535.' }
+  }
+  return $parts -join '.'
+}
+
+function Get-ReforkedPackagePublisher([string] $Value, [bool] $IsUnsignedTest, [string] $Certificate) {
+  if ($IsUnsignedTest) {
+    if ($Certificate) { throw '-UnsignedTest cannot be combined with -CertificateThumbprint.' }
+    return 'CN=Reforked Local Test, OID.2.25.311729368913984317654407730594956997722=1'
+  }
+  if ($Value.Contains('OID.2.25.311729368913984317654407730594956997722')) {
+    throw 'Use -UnsignedTest to build a package with the unsigned test publisher.'
+  }
+  return $Value
+}
+
+$packageVersion = Get-ReforkedPackageVersion $Version
+$Publisher = Get-ReforkedPackagePublisher $Publisher $UnsignedTest.IsPresent $CertificateThumbprint
 
 $repository = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $directoryName = if ($Architecture -eq 'x64') { 'amd64' } else { 'aarch64' }
@@ -59,7 +82,7 @@ if ($CertificateThumbprint) {
 $messages = ConvertFrom-StringData (Get-Content -LiteralPath (Join-Path $PSScriptRoot 'shell.properties') -Raw)
 $manifest = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'AppxManifest.xml.in') -Raw
 $manifest = $manifest.Replace('@PUBLISHER@', [Security.SecurityElement]::Escape($Publisher)).
-  Replace('@VERSION@', $Version.ToString(4)).Replace('@ARCHITECTURE@', $Architecture).
+  Replace('@VERSION@', $packageVersion).Replace('@ARCHITECTURE@', $Architecture).
   Replace('@DESCRIPTION@', [Security.SecurityElement]::Escape($messages['package.description']))
 [IO.File]::WriteAllText((Join-Path $layoutDirectory 'AppxManifest.xml'), $manifest, [Text.UTF8Encoding]::new($false))
 

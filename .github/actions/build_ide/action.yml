@@ -7,6 +7,9 @@ inputs:
   version:
     description: 'build number'
     required: true
+  windows_shell_root:
+    description: 'directory containing the Windows menu packages inside the build container'
+    required: false
 runs:
   using: composite
   steps:
@@ -22,5 +25,11 @@ runs:
       env:
         product: ${{inputs.product}}
         version: ${{inputs.version}}
+        windows_shell_root: ${{inputs.windows_shell_root}}
       # language=bash
-      run: docker run --rm --user "$(id -u)" --volume "${PWD}:/community" $product -Dbuild.version=$version
+      run: |
+        args=("-Dbuild.version=$version")
+        if [ -n "$windows_shell_root" ]; then
+          args+=("-Dintellij.build.reforked.windows.shell.root=$windows_shell_root")
+        fi
+        docker run --rm --user "$(id -u)" --volume "${PWD}:/community" "$product" "${args[@]}"

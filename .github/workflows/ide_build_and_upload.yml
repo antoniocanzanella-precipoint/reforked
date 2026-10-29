@@ -18,8 +18,46 @@ on:
 permissions: {}
 
 jobs:
+  windows-shell:
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - architecture: x64
+            directory: amd64
+          - architecture: arm64
+            directory: aarch64
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Test Windows package registration policy
+        if: matrix.architecture == 'x64'
+        shell: powershell
+        run: ./native/WinExplorerCommand/package-policy.tests.ps1
+      - name: Build the Windows 11 menu test package
+        shell: pwsh
+        env:
+          BUILD_VERSION: ${{ inputs.version }}
+          SHELL_ARCHITECTURE: ${{ matrix.architecture }}
+        run: |
+          $version = $env:BUILD_VERSION -replace '\.SNAPSHOT$', '.0.0.0'
+          ./native/WinExplorerCommand/build.ps1 -Architecture $env:SHELL_ARCHITECTURE -Version $version -UnsignedTest
+      - name: Upload the Windows 11 menu package
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: reforked-shell-${{ matrix.directory }}
+          if-no-files-found: error
+          retention-days: 1
+          path: |
+            out/reforked-shell/${{ matrix.directory }}/reforked-shell.dll
+            out/reforked-shell/${{ matrix.directory }}/reforked-shell.msix
+            out/reforked-shell/${{ matrix.directory }}/reforked-shell.png
+
   distributions:
     runs-on: ubuntu-latest
+    needs: windows-shell
     outputs:
       unsigned-windows-artifact-id-x64: ${{ steps.upload-unsigned-artifact-x64.outputs.artifact-id }}
       unsigned-windows-artifact-id-aarch64: ${{ steps.upload-unsigned-artifact-aarch64.outputs.artifact-id }}
@@ -27,15 +65,37 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+      - name: Download the Windows 11 menu packages
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          pattern: reforked-shell-*
+          path: out/reforked-shell-download
+      - name: Check both Windows menu packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          for arch in amd64 aarch64; do
+            mkdir -p "out/reforked-shell/$arch"
+            for name in reforked-shell.dll reforked-shell.msix reforked-shell.png; do
+              source="out/reforked-shell-download/reforked-shell-$arch/$name"
+              test -s "$source"
+              cp "$source" "out/reforked-shell/$arch/$name"
+            done
+          done
       - uses: ./.github/actions/build_ide
         with:
           product: ${{inputs.product}}
           version: ${{inputs.version}}
+          windows_shell_root: /community/out/reforked-shell
       - name: Check all bundled plugins
         if: inputs.product == 'intellij_idea'
         env:
           ARTIFACTS_DIR: ${{ inputs.artifacts_dir }}
         run: node .github/scripts/verify-bundled-plugins.mjs "$ARTIFACTS_DIR"
+      - name: Check the bundled Windows menu packages
+        env:
+          ARTIFACTS_DIR: ${{ inputs.artifacts_dir }}
+        run: python3 .github/scripts/verify-windows-shell.py "$ARTIFACTS_DIR"
       - name: upload-linux-x64
         uses: ./.github/actions/upload_ide
         with:

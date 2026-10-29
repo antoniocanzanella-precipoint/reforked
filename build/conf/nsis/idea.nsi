@@ -31,6 +31,9 @@ ${UnStrStr}
 !include "log.nsi"
 !include "config.nsi"
 !include "customInstallActions.nsi"
+!if "${PRODUCT_EXE_FILE}" == "reforked64.exe"
+  !include "reforked-open-with.nsh"
+!endif
 
 Name "${MUI_PRODUCT}"
 
@@ -655,9 +658,13 @@ Function ProductRegistration
   WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\shell\open\command" "" '"$productLauncher" "%1"'
 
 !if "${PRODUCT_EXE_FILE}" == "reforked64.exe"
-  WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\SupportedTypes" "*" ""
-  WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\SupportedTypes" ".txt" ""
-  WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\SupportedTypes" ".md" ""
+  WriteRegStr SHCTX "Software\Classes\${REFORKED_FILE_PROGID}" "" "${MUI_PRODUCT}"
+  WriteRegStr SHCTX "Software\Classes\${REFORKED_FILE_PROGID}\DefaultIcon" "" "$productLauncher,0"
+  WriteRegStr SHCTX "Software\Classes\${REFORKED_FILE_PROGID}\Application" "ApplicationName" "${MUI_PRODUCT}"
+  WriteRegStr SHCTX "Software\Classes\${REFORKED_FILE_PROGID}\Application" "ApplicationIcon" "$productLauncher,0"
+  WriteRegStr SHCTX "Software\Classes\${REFORKED_FILE_PROGID}\shell\open\command" "" '"$productLauncher" "%1"'
+  DeleteRegValue SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\SupportedTypes" "*"
+  !insertmacro ReforkedSupportedExtensions RegisterReforkedExtension
 !endif
 FunctionEnd
 
@@ -1274,6 +1281,9 @@ Function un.ProductAssociation
       ${EndIf}
       ReadRegStr $1 SHCTX "Software\Classes\$0\DefaultIcon" ""
       ${If} $1 == "$INSTDIR\bin\${PRODUCT_EXE_FILE},0"
+!if "${PRODUCT_EXE_FILE}" == "reforked64.exe"
+      ${AndIf} $0 != "${REFORKED_FILE_PROGID}"
+!endif
         StrCpy $R0 $0
         ${Break}
       ${EndIf}
@@ -1314,6 +1324,13 @@ Function un.ProductAssociation
 FunctionEnd
 
 Function un.ProductRegistration
+!if "${PRODUCT_EXE_FILE}" == "reforked64.exe"
+  ReadRegStr $0 SHCTX "Software\Classes\${REFORKED_FILE_PROGID}\shell\open\command" ""
+  ${If} $0 == '"$INSTDIR\bin\${PRODUCT_EXE_FILE}" "%1"'
+    !insertmacro ReforkedSupportedExtensions UnregisterReforkedExtension
+    DeleteRegKey SHCTX "Software\Classes\${REFORKED_FILE_PROGID}"
+  ${EndIf}
+!endif
   ReadRegStr $0 SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\shell\open\command" ""
   ${If} $0 == '"$INSTDIR\bin\${PRODUCT_EXE_FILE}" "%1"'
     DetailPrint "Unregistering '${PRODUCT_EXE_FILE}' from the application list"

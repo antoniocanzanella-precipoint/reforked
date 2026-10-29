@@ -146,8 +146,9 @@ internal sealed class CustomHeader(@JvmField internal val window: Window) : JPan
     }
   }
 
+  private var productIconSize = 16
   private val iconProvider = ScaleContextCache {
-    AppUIUtil.loadSmallApplicationIcon(scaleContext = it, size = 16)
+    AppUIUtil.loadSmallApplicationIcon(scaleContext = it, size = productIconSize)
   }
 
   @JvmField
@@ -160,6 +161,14 @@ internal sealed class CustomHeader(@JvmField internal val window: Window) : JPan
 
   protected val productIcon: JComponent by lazy {
     createProductIcon()
+  }
+
+  protected fun updateProductIconSize(size: Int) {
+    if (productIconSize == size) return
+    productIconSize = size
+    iconProvider.clear()
+    productIcon.revalidate()
+    productIcon.repaint()
   }
 
   init {
