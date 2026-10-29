@@ -31,6 +31,11 @@ jobs:
         with:
           product: ${{inputs.product}}
           version: ${{inputs.version}}
+      - name: Check all bundled plugins
+        if: inputs.product == 'intellij_idea'
+        env:
+          ARTIFACTS_DIR: ${{ inputs.artifacts_dir }}
+        run: node .github/scripts/verify-bundled-plugins.mjs "$ARTIFACTS_DIR"
       - name: upload-linux-x64
         uses: ./.github/actions/upload_ide
         with:

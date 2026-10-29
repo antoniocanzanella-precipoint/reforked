@@ -576,6 +576,15 @@ Function UpdateContextMenu
       WriteRegStr SHCTX $0 "" "Edit with ${MUI_PRODUCT}"
       WriteRegStr SHCTX $0 "Icon" "$productLauncher"
       WriteRegStr SHCTX "$0\command" "" '"$productLauncher" "%1"'
+
+!if "${PRODUCT_EXE_FILE}" == "reforked64.exe"
+      ${If} ${FileExists} "$INSTDIR\bin\reforked-shell.msix"
+      ${AndIf} ${AtLeastWin11}
+        nsExec::ExecToLog '"$WINDIR\Sysnative\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "$INSTDIR\bin\reforked-shell-integration.ps1" -Action Register -InstallDirectory "$INSTDIR"'
+        Pop $0
+        ${LogText} "Explorer registration: $0"
+      ${EndIf}
+!endif
     ${EndIf}
   ${EndIf}
 FunctionEnd
@@ -641,8 +650,15 @@ Function ProductRegistration
   ${LogText} "Registering '$3' in the application list"
   DetailPrint "Registering '$3' in the application list"
 
-  WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\shell\open" "FriendlyAppName" "$3"
+  WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}" "FriendlyAppName" "$3"
+  WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\DefaultIcon" "" "$productLauncher,0"
   WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\shell\open\command" "" '"$productLauncher" "%1"'
+
+!if "${PRODUCT_EXE_FILE}" == "reforked64.exe"
+  WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\SupportedTypes" "*" ""
+  WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\SupportedTypes" ".txt" ""
+  WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\SupportedTypes" ".md" ""
+!endif
 FunctionEnd
 
 Function UpdatePathEnvVar
@@ -1096,6 +1112,15 @@ Section "Uninstall"
   Call un.DesktopShortcut
   Call un.UpdatePathEnvVar
   Call un.CachesAndSettings
+
+!if "${PRODUCT_EXE_FILE}" == "reforked64.exe"
+  ${If} ${FileExists} "$INSTDIR\bin\reforked-shell.msix"
+  ${AndIf} ${AtLeastWin11}
+    nsExec::ExecToLog '"$WINDIR\Sysnative\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "$INSTDIR\bin\reforked-shell-integration.ps1" -Action Unregister -InstallDirectory "$INSTDIR"'
+    Pop $0
+    ${LogText} "Explorer removal: $0"
+  ${EndIf}
+!endif
 
   ; deleting the uninstaller itself and other cruft
   Delete "$INSTDIR\bin\Uninstall.exe"

@@ -8,6 +8,7 @@ import org.jetbrains.intellij.build.BuildPaths.Companion.COMMUNITY_ROOT
 import org.jetbrains.intellij.build.impl.createBuildContext
 import org.jetbrains.intellij.build.impl.qodana.QodanaProductProperties
 import org.jetbrains.intellij.build.io.copyDir
+import org.jetbrains.intellij.build.io.copyFile
 import org.jetbrains.intellij.build.io.copyFileToDir
 import org.jetbrains.intellij.build.productLayout.CommunityModuleSets
 import org.jetbrains.intellij.build.productLayout.CommunityProductFragments.platformCoreFragment
@@ -266,6 +267,25 @@ inline fun ideaCommunityWindowsCustomizer(
 
   fullName { "Reforked" }
   installDirNameHandler { "Reforked" }
+
+  copyAdditionalFiles { targetDir, arch, context ->
+    val binDir = targetDir.resolve("bin")
+    copyFileToDir(projectHome.resolve("build/conf/nsis/reforked-shell-integration.ps1"), binDir)
+    copyFile(
+      projectHome.resolve("native/WinExplorerCommand/shell.properties"),
+      binDir.resolve("reforked-shell.properties"),
+    )
+    val shellRoot = System.getProperty("intellij.build.reforked.windows.shell.root")
+    if (shellRoot != null) {
+      val shellDir = Path.of(shellRoot).resolve(arch.dirName)
+      for (name in listOf("reforked-shell.dll", "reforked-shell.msix", "reforked-shell.png")) {
+        copyFileToDir(shellDir.resolve(name), binDir)
+      }
+    }
+    else {
+      context.messages.info("Set intellij.build.reforked.windows.shell.root to include the signed Explorer package.")
+    }
+  }
 
   configure()
 }

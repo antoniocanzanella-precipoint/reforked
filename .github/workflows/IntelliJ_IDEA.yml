@@ -33,7 +33,9 @@ jobs:
         with:
           persist-credentials: false
       - name: Test release preparation
-        run: node --test .github/scripts/prepare-release.test.mjs .github/scripts/release-version.test.mjs
+        run: |
+          node --test .github/scripts/prepare-release.test.mjs .github/scripts/release-version.test.mjs \
+            .github/scripts/verify-bundled-plugins.test.mjs
       - name: get build number
         id: get_version
         env:

@@ -1,0 +1,6 @@
+#include <windows.h>
+
+STRINGTABLE
+BEGIN
+  101 "@MENU_TITLE@"
+END

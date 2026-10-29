@@ -155,6 +155,7 @@ The release scripts have their own tests:
 
 ```shell
 node --test .github/scripts/prepare-release.test.mjs .github/scripts/release-version.test.mjs
+node --test .github/scripts/verify-bundled-plugins.test.mjs
 ```
 
 ## Publishing the project site
@@ -195,6 +196,10 @@ For example, the tag `1.2.0-preview.1` produces the package version `1.2.0`.
 The workflow checks 20 required assets before it creates a draft.
 The assets include Windows installers and ZIP files, macOS disk images, Linux archives, AppImages, update files, and software bills of materials.
 The check rejects missing files and empty files.
+Before upload, the build compares each Windows, Linux, and macOS archive's plugin metadata with `.github/scripts/bundled-plugins.json`.
+This check covers x86_64 and aarch64.
+The check rejects missing plugins, extra plugins, and invalid plugin lists.
+Update the inventory when you change the bundled plugin set.
 
 The fork builds unsigned Windows installers.
 It skips upstream signing and upstream package publication.
