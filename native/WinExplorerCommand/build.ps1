@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Build the Reforked folder command and its package.
+Build the Reforked Explorer command and its package.
 .DESCRIPTION
 Use a trusted certificate for a release package. Use -UnsignedTest only for an unsigned test package that requires administrator installation.
 Pass the parent output directory to the installer build with -Dintellij.build.reforked.windows.shell.root=<directory>.
@@ -57,10 +57,15 @@ if (-not $visualStudio) { throw 'Visual Studio C++ tools are required.' }
 $cmake = Join-Path $visualStudio 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe'
 if (-not (Test-Path -LiteralPath $cmake)) { $cmake = (Get-Command cmake -ErrorAction Stop).Source }
 $cmakeArchitecture = if ($Architecture -eq 'arm64') { 'ARM64' } else { 'x64' }
-& $cmake -S $PSScriptRoot -B $buildDirectory -A $cmakeArchitecture
+& $cmake -S $PSScriptRoot -B $buildDirectory -A $cmakeArchitecture -DBUILD_TESTING=ON
 if ($LASTEXITCODE -ne 0) { throw 'CMake failed.' }
 & $cmake --build $buildDirectory --config Release
 if ($LASTEXITCODE -ne 0) { throw 'The native build failed.' }
+if ($Architecture -eq [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()) {
+  $ctest = Join-Path (Split-Path $cmake) 'ctest.exe'
+  & $ctest --test-dir $buildDirectory -C Release --output-on-failure
+  if ($LASTEXITCODE -ne 0) { throw 'The native tests failed.' }
+}
 Copy-Item -LiteralPath (Join-Path $buildDirectory 'Release/reforked-shell.dll') -Destination $OutputDirectory -Force
 
 $kitsRoot = (Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows Kits\Installed Roots' -Name KitsRoot10).KitsRoot10

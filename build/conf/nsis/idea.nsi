@@ -578,6 +578,7 @@ Function UpdateContextMenu
       StrCpy $0 "Software\Classes\*\shell\Open with ${MUI_PRODUCT}"
       WriteRegStr SHCTX $0 "" "Edit with ${MUI_PRODUCT}"
       WriteRegStr SHCTX $0 "Icon" "$productLauncher"
+      WriteRegStr SHCTX $0 "NeverDefault" ""
       WriteRegStr SHCTX "$0\command" "" '"$productLauncher" "%1"'
 
 !if "${PRODUCT_EXE_FILE}" == "reforked64.exe"

@@ -20,3 +20,12 @@ target_compile_definitions(reforked-shell PRIVATE UNICODE _UNICODE WIN32_LEAN_AN
 target_compile_options(reforked-shell PRIVATE /W4 /WX /permissive- /guard:cf /sdl /external:anglebrackets /external:W0)
 target_link_options(reforked-shell PRIVATE /guard:cf /DYNAMICBASE /NXCOMPAT)
 target_link_libraries(reforked-shell PRIVATE ole32 shell32 shlwapi runtimeobject)
+
+include(CTest)
+if(BUILD_TESTING)
+  add_executable(reforked-shell-test explorer_command_test.cpp)
+  target_compile_definitions(reforked-shell-test PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
+  target_compile_options(reforked-shell-test PRIVATE /W4 /WX /permissive- /external:anglebrackets /external:W0)
+  target_link_libraries(reforked-shell-test PRIVATE ole32 shell32 uuid)
+  add_test(NAME reforked-shell COMMAND reforked-shell-test "$<TARGET_FILE:reforked-shell>")
+endif()

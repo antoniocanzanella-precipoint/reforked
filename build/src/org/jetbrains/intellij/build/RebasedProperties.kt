@@ -263,6 +263,7 @@ inline fun ideaCommunityWindowsCustomizer(
   projectHome: Path,
   configure: WindowsCustomizerBuilder.() -> Unit = {}
 ): WindowsDistributionCustomizer = windowsCustomizer(projectHome) {
+  associateIpr = false
   fileAssociations = emptyList()
 
   fullName { "Reforked" }
@@ -295,7 +296,7 @@ inline fun ideaCommunityMacCustomizer(
   configure: MacCustomizerBuilder.() -> Unit = {}
 ): MacDistributionCustomizer = macCustomizer(projectHome) {
   urlSchemes = listOf("reforked")
-  associateIpr = true
+  associateIpr = false
   fileAssociations = emptyList()
   bundleIdentifier = "io.github.antoniocanzanella-precipoint.reforked"
 
