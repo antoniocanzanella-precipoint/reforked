@@ -659,10 +659,12 @@ Function ProductRegistration
   WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\shell\open\command" "" '"$productLauncher" "%1"'
 
 !if "${PRODUCT_EXE_FILE}" == "reforked64.exe"
+  WriteRegStr SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\shell\open" "NeverDefault" ""
   WriteRegStr SHCTX "Software\Classes\${REFORKED_FILE_PROGID}" "" "${MUI_PRODUCT}"
   WriteRegStr SHCTX "Software\Classes\${REFORKED_FILE_PROGID}\DefaultIcon" "" "$productLauncher,0"
   WriteRegStr SHCTX "Software\Classes\${REFORKED_FILE_PROGID}\Application" "ApplicationName" "${MUI_PRODUCT}"
   WriteRegStr SHCTX "Software\Classes\${REFORKED_FILE_PROGID}\Application" "ApplicationIcon" "$productLauncher,0"
+  WriteRegStr SHCTX "Software\Classes\${REFORKED_FILE_PROGID}\shell\open" "NeverDefault" ""
   WriteRegStr SHCTX "Software\Classes\${REFORKED_FILE_PROGID}\shell\open\command" "" '"$productLauncher" "%1"'
   DeleteRegValue SHCTX "Software\Classes\Applications\${PRODUCT_EXE_FILE}\SupportedTypes" "*"
   !insertmacro ReforkedSupportedExtensions RegisterReforkedExtension
