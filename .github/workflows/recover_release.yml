@@ -151,7 +151,7 @@ jobs:
           SOURCE_SHA: ${{ needs.dmg.outputs.source_sha }}
         run: |
           set -euo pipefail
-          tag_sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_VERSION" --jq '.object.sha' 2>/dev/null || true)
+          tag_sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_VERSION" --jq '.object.sha' 2>/dev/null) || tag_sha=''
           if [ -z "$tag_sha" ]; then
             gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" -f "ref=refs/tags/$RELEASE_VERSION" -f "sha=$SOURCE_SHA"
           elif [ "$tag_sha" != "$SOURCE_SHA" ]; then
