@@ -155,7 +155,7 @@ open class VcsLogClassicFilterUi(private val logData: VcsLogData,
     return DefaultActionGroup(actions)
   }
 
-  @RequiresEdt
+  @RequiresEdt(generateAssertion = false /* IJPL-115548 */)
   override fun getFilters(): VcsLogFilterCollection {
     val filters = buildList {
       addAll(branchFilterModel.filtersList)
@@ -169,7 +169,7 @@ open class VcsLogClassicFilterUi(private val logData: VcsLogData,
     return VcsLogFilterObject.collection(*filters.toTypedArray())
   }
 
-  @RequiresEdt
+  @RequiresEdt(generateAssertion = false /* IJPL-115548 */)
   override fun setFilters(collection: VcsLogFilterCollection) {
     branchFilterModel.setFilter(collection)
     structureFilterModel.setFilter(collection)

@@ -471,7 +471,7 @@ open class JBTabsImpl internal constructor(
 
   protected open fun createTabBorder(): JBTabsBorder = JBDefaultTabsBorder(this)
 
-  protected open fun createTabPainterAdapter(): TabPainterAdapter = IslandsPainterProvider.getInstance()?.createCommonTabPainter() ?: DefaultTabPainterAdapter(DEFAULT)
+  protected open fun createTabPainterAdapter(): TabPainterAdapter = UIThemeCustomization.getInstance()?.commonTabPainterAdapter ?: DefaultTabPainterAdapter(DEFAULT)
 
   private var tabLabelAtMouse: TabLabel? = null
   private val scrollBar: JBScrollBar
@@ -828,7 +828,7 @@ open class JBTabsImpl internal constructor(
 
   fun ignoreTabLabelLimitedWidthWhenPaint(): Boolean = effectiveLayout.isScrollable
 
-  @RequiresEdt
+  @RequiresEdt(generateAssertion = false /* IJPL-115548 */)
   fun resetTabsCache() {
     allTabs = null
   }
@@ -1507,7 +1507,7 @@ open class JBTabsImpl internal constructor(
   }
 
   @Internal
-  @RequiresEdt
+  @RequiresEdt(generateAssertion = false /* IJPL-115548 */)
   fun setTabs(tabs: List<TabInfo>) {
     for (tab in tabs) {
       tab.changeSupport.addPropertyChangeListener(this)
@@ -1660,7 +1660,7 @@ open class JBTabsImpl internal constructor(
   }
 
   @Internal
-  @RequiresEdt
+  @RequiresEdt(generateAssertion = false /* IJPL-115548 */)
   fun selectTabSilently(tab: TabInfo) {
     setSelectedInfo(tab)
     setComponentZOrder(tab.tabLabel!!, 0)
@@ -2045,7 +2045,7 @@ open class JBTabsImpl internal constructor(
 
   override fun getTabAt(tabIndex: Int): TabInfo = tabs.get(tabIndex)
 
-  @RequiresEdt
+  @RequiresEdt(generateAssertion = false /* IJPL-115548 */)
   override fun getTabs(): List<TabInfo> {
     allTabs?.let {
       return it
@@ -2660,7 +2660,7 @@ open class JBTabsImpl internal constructor(
 
   override fun removeTab(info: TabInfo?): ActionCallback = removeTab(info = info, forcedSelectionTransfer = null)
 
-  @RequiresEdt
+  @RequiresEdt(generateAssertion = false /* IJPL-115548 */)
   @Internal
   fun removeTab(
     info: TabInfo?,
@@ -2720,7 +2720,7 @@ open class JBTabsImpl internal constructor(
     return result
   }
 
-  @RequiresEdt
+  @RequiresEdt(generateAssertion = false /* IJPL-115548 */)
   @Internal
   fun removeTabWithoutChangingSelection(info: TabInfo) {
     if (removeNotifyInProgress) {

@@ -234,6 +234,8 @@ Upstream Rebased manages its own IntelliJ release bases.
 Importing upstream `master` does not reproduce an upstream release.
 Use the relevant upstream release branch or tag when you need that release base.
 
+See [the upstream merge guide](https://github.com/DetachHead/rebased/blob/master/CONTRIBUTING.md#keeping-up-to-date-with-upstream) for IntelliJ release details and common build errors.
+
 ## Importing a feature from another repository
 
 Keep each imported feature in a separate branch.
