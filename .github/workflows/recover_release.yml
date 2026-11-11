@@ -1,0 +1,163 @@
+name: Recover Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: 'The original release run ID'
+        required: true
+        type: string
+      version:
+        description: 'The original release version'
+        required: true
+        type: string
+      architecture:
+        description: 'The missing macOS image'
+        required: true
+        type: choice
+        options:
+          - aarch64
+          - x64
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  dmg:
+    runs-on: macos-15-intel
+    outputs:
+      source_sha: ${{ steps.source.outputs.sha }}
+      version: ${{ steps.version.outputs.version }}
+      suffix: ${{ steps.architecture.outputs.suffix }}
+    steps:
+      - name: Check the source run
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" > source-run.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID/jobs?per_page=100" > source-jobs.json
+          node <<'JS'
+          const fs = require('node:fs');
+          const run = JSON.parse(fs.readFileSync('source-run.json'));
+          const jobs = JSON.parse(fs.readFileSync('source-jobs.json')).jobs;
+          if (run.event !== 'workflow_dispatch' || run.path !== '.github/workflows/IntelliJ_IDEA.yml') {
+            throw new Error('Use an original manual release run.');
+          }
+          const required = ['get_version', 'build / distributions',
+            'build / windows-shell (x64, amd64)', 'build / windows-shell (arm64, aarch64)',
+            'build / build-appimage (x86_64)', 'build / build-appimage (-aarch64, aarch64)'];
+          for (const name of required) {
+            if (!jobs.some(job => job.name === name && job.conclusion === 'success')) {
+              throw new Error(`The source job did not pass: ${name}`);
+            }
+          }
+          if (!/^[0-9a-f]{40}$/.test(run.head_sha)) throw new Error('Invalid source commit.');
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `sha=${run.head_sha}\n`);
+          JS
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ steps.source.outputs.sha }}
+          persist-credentials: false
+      - name: Check the version
+        id: version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: node .github/scripts/release-version.mjs
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: reforked-shell-amd64
+          path: native-check
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+      - name: Check the original package version
+        env:
+          BUILD_VERSION: ${{ steps.version.outputs.build_version }}
+        run: |
+          python3 <<'PY'
+          import os, zipfile, xml.etree.ElementTree as ET
+          parts = os.environ['BUILD_VERSION'].split('.')
+          expected = '.'.join(parts + ['0'] * (4 - len(parts)))
+          with zipfile.ZipFile('native-check/reforked-shell.msix') as archive:
+              manifest = ET.fromstring(archive.read('AppxManifest.xml'))
+          identity = manifest.find('{http://schemas.microsoft.com/appx/manifest/foundation/windows10}Identity')
+          if identity is None or identity.attrib['Version'] != expected:
+              raise SystemExit('The version does not match the original package.')
+          PY
+      - name: Select the image
+        id: architecture
+        env:
+          ARCHITECTURE: ${{ inputs.architecture }}
+        run: |
+          case "$ARCHITECTURE" in
+            aarch64) echo 'suffix=-aarch64' >> "$GITHUB_OUTPUT" ;;
+            x64) echo 'suffix=' >> "$GITHUB_OUTPUT" ;;
+            *) exit 1 ;;
+          esac
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: dmg-build-scripts
+          path: dmg-work
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: mac${{ steps.architecture.outputs.suffix }}.sit-unsigned
+          path: dmg-work
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+      - name: Build the missing image
+        working-directory: dmg-work
+        run: /bin/bash ./build.sh
+      - uses: ./.github/actions/upload_ide
+        with:
+          os: mac
+          suffix: ${{ steps.architecture.outputs.suffix }}.dmg
+          artifacts_dir: dmg-work
+
+  release:
+    name: Create Release
+    needs: dmg
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ needs.dmg.outputs.source_sha }}
+          persist-credentials: false
+      - name: Download the original packages
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          path: artifacts
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+      - name: Download the new image
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: mac${{ needs.dmg.outputs.suffix }}.dmg-unsigned
+          path: artifacts/mac${{ needs.dmg.outputs.suffix }}.dmg-unsigned
+      - name: Check and collect all release assets
+        run: node .github/scripts/prepare-release.mjs artifacts release-assets
+      - name: Create the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ needs.dmg.outputs.version }}
+          SOURCE_SHA: ${{ needs.dmg.outputs.source_sha }}
+        run: |
+          set -euo pipefail
+          tag_sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_VERSION" --jq '.object.sha' 2>/dev/null || true)
+          if [ -z "$tag_sha" ]; then
+            gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" -f "ref=refs/tags/$RELEASE_VERSION" -f "sha=$SOURCE_SHA"
+          elif [ "$tag_sha" != "$SOURCE_SHA" ]; then
+            echo 'The tag does not match the original source commit.' >&2
+            exit 1
+          fi
+          gh release create "$RELEASE_VERSION" release-assets/* --verify-tag --draft --prerelease \
+            --title "$RELEASE_VERSION" \
+            --notes 'The Windows 11 menu package is unsigned. Installing this package requires administrator rights.'
