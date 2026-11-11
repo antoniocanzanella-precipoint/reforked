@@ -78,7 +78,7 @@ internal object JewelMavenArtifacts {
   }
 
   fun isPublishedJewelModule(module: JpsModule): Boolean =
-    module.name.startsWith("intellij.platform.jewel.") && module.name !in NOT_PUBLISHED
+    module.name in ALL_MODULES && module.name !in NOT_PUBLISHED
 
   /**
    * The icons modules required in Jewel Standalone and published to Maven Central transitively through
